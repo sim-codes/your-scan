@@ -1,0 +1,7 @@
+export const COLORS = {
+    PRIMARY_START: '#7327F5',
+    PRIMARY_END: '#49178F',
+    BORDER_INACTIVE: '#E0E0E0',
+    BORDER_ACTIVE: '#7327F5',
+    ERROR: '#FF0000'
+};
