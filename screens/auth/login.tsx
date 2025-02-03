@@ -44,7 +44,6 @@ export default function LoginScreen() {
                     name="password"
                     label="Password"
                     isPassword
-                    secureTextEntry
                     placeholder="********"
                     rules={{
                     required: 'Password is required',

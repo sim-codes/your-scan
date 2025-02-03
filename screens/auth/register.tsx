@@ -58,7 +58,6 @@ export default function RegisterScreen() {
                     name="password1"
                     label="Password"
                     isPassword
-                    secureTextEntry
                     placeholder="********"
                     rules={{
                     required: 'Password is required',
@@ -74,7 +73,6 @@ export default function RegisterScreen() {
                     name="password2"
                     label="Confirm Password"
                     isPassword
-                    secureTextEntry
                     placeholder="********"
                     rules={{
                     required: 'Password is required',
