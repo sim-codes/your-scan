@@ -12,6 +12,7 @@ export default function RegisterScreen() {
 
     const { control, handleSubmit } = useForm({
         defaultValues: {
+            fullname: '',
             email: '',
             password1: '',
             password2: ''
@@ -23,14 +24,26 @@ export default function RegisterScreen() {
     };
     return (
         <SafeAreaView variant="screen" style={{ justifyContent: 'center'}}>
-            <HeaderText>Register</HeaderText>
-            <BodyText>Create an account to get started</BodyText>
+            <View style={tw`android:my-8 ios:my-2`}>
+                <HeaderText>Register</HeaderText>
+                <BodyText>Create an account to get started</BodyText>
+            </View>
+
+            <FormField
+                control={control}
+                name="fullname"
+                label="Full Name"
+                placeholder="John Olivia"
+                rules={{
+                required: 'Full name is required'
+                }}
+            />
 
             <FormField
                 control={control}
                 name="email"
                 label="Email"
-                placeholder="Enter your email"
+                placeholder="oliva@gmail.com"
                 rules={{
                 required: 'Email is required',
                 pattern: {
@@ -42,11 +55,11 @@ export default function RegisterScreen() {
 
             <FormField
                     control={control}
-                    name="password"
+                    name="password1"
                     label="Password"
                     isPassword
                     secureTextEntry
-                    placeholder="Enter your password"
+                    placeholder="********"
                     rules={{
                     required: 'Password is required',
                     minLength: {
@@ -62,7 +75,7 @@ export default function RegisterScreen() {
                     label="Confirm Password"
                     isPassword
                     secureTextEntry
-                    placeholder="Enter your password"
+                    placeholder="********"
                     rules={{
                     required: 'Password is required',
                     minLength: {

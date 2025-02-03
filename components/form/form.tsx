@@ -51,12 +51,12 @@ export const CustomInput = ({
             {isPassword && (
                 <TouchableOpacity
                     onPress={() => setIsPasswordVisible(!isPasswordVisible)}
-                    style={tw`absolute right-4`}
+                    style={tw`absolute right-4 self-center`}
                 >
-                        {isPasswordVisible ? (
-                            <Ionicons name="eye-off-outline" size={24} color={`${COLORS.BORDER_ACTIVE}`} />
-                        ) : (
-                            <Ionicons name="eye-outline" size={24} color={`${COLORS.BORDER_ACTIVE}`} />
+                    {isPasswordVisible ? (
+                        <Ionicons name = "eye-outline" size = { 24 } color = {COLORS.BORDER_ACTIVE} />
+                    ) : (
+                        <Ionicons name="eye-off-outline" size={24} color={COLORS.BORDER_ACTIVE} />
                     )}
                 </TouchableOpacity>
             )}

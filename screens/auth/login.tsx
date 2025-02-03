@@ -29,7 +29,7 @@ export default function LoginScreen() {
                 control={control}
                 name="email"
                 label="Email"
-                placeholder="Enter your email"
+                placeholder="olivia@gmail.com"
                 rules={{
                 required: 'Email is required',
                 pattern: {
@@ -45,7 +45,7 @@ export default function LoginScreen() {
                     label="Password"
                     isPassword
                     secureTextEntry
-                    placeholder="Enter your password"
+                    placeholder="********"
                     rules={{
                     required: 'Password is required',
                     minLength: {
