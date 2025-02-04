@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator();
 
 
 export default function App() {
-    const isAuthenticated = false;
+    const isAuthenticated = true;
     return (
         <SafeAreaProvider>
             <NavigationContainer>
