@@ -96,9 +96,9 @@ export const ExportPlugin = () => {
                 currentParagraphSegments.forEach(segment => {
                     // Set font temporarily to measure text
                     const fontStyle = (segment.bold && segment.italic) ? 'bolditalic'
-                                  : segment.bold ? 'bold'
-                                  : segment.italic ? 'italic'
-                                  : 'normal';
+                                    : segment.bold ? 'bold'
+                                    : segment.italic ? 'italic'
+                                    : 'normal';
                     doc.setFont('helvetica', fontStyle);
                     const segmentWidth = doc.getTextWidth(segment.text);
 
@@ -154,9 +154,9 @@ export const ExportPlugin = () => {
                     let lineWidth = 0;
                     line.forEach(segment => {
                         const fontStyle = (segment.bold && segment.italic) ? 'bolditalic'
-                                      : segment.bold ? 'bold'
-                                      : segment.italic ? 'italic'
-                                      : 'normal';
+                                        : segment.bold ? 'bold'
+                                        : segment.italic ? 'italic'
+                                        : 'normal';
                         doc.setFont('helvetica', fontStyle);
                         lineWidth += doc.getTextWidth(segment.text + ' ');
                     });
@@ -175,29 +175,29 @@ export const ExportPlugin = () => {
                                 const spaces = line.length - 1;
                                 const extraSpace = (textWidth - lineWidth) / spaces;
                                 x = margin;
-                                
+
                                 line.forEach((segment, index) => {
                                     const fontStyle = (segment.bold && segment.italic) ? 'bolditalic'
-                                                  : segment.bold ? 'bold'
-                                                  : segment.italic ? 'italic'
-                                                  : 'normal';
+                                                    : segment.bold ? 'bold'
+                                                    : segment.italic ? 'italic'
+                                                    : 'normal';
                                     doc.setFont('helvetica', fontStyle);
-                                    
+
                                     doc.text(segment.text, x, y);
-                                    
+
                                     if (segment.underline) {
                                         const segWidth = doc.getTextWidth(segment.text);
                                         doc.line(x, y + 1, x + segWidth, y + 1);
                                     }
-                                    
+
                                     if (segment.strikethrough) {
                                         const segWidth = doc.getTextWidth(segment.text);
                                         doc.line(x, y - 2, x + segWidth, y - 2);
                                     }
-                                    
+
                                     x += doc.getTextWidth(segment.text) + (index < line.length - 1 ? extraSpace : 0);
                                 });
-                                
+
                                 y += 7;
                                 return;
                             }
@@ -210,22 +210,22 @@ export const ExportPlugin = () => {
                     // Print each segment in the line
                     line.forEach(segment => {
                         const fontStyle = (segment.bold && segment.italic) ? 'bolditalic'
-                                      : segment.bold ? 'bold'
-                                      : segment.italic ? 'italic'
-                                      : 'normal';
+                                        : segment.bold ? 'bold'
+                                        : segment.italic ? 'italic'
+                                        : 'normal';
                         doc.setFont('helvetica', fontStyle);
-                        
+
                         const segmentWidth = doc.getTextWidth(segment.text);
                         doc.text(segment.text, x, y);
-                        
+
                         if (segment.underline) {
                             doc.line(x, y + 1, x + segmentWidth, y + 1);
                         }
-                        
+
                         if (segment.strikethrough) {
                             doc.line(x, y - 2, x + segmentWidth, y - 2);
                         }
-                        
+
                         x += segmentWidth + doc.getTextWidth(' ');
                     });
 
