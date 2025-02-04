@@ -8,6 +8,7 @@ import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
+import { ExportPlugin } from "./plugins/ExportPlugin";
 
 import ExampleTheme from "./ExampleTheme";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
@@ -66,6 +67,7 @@ export default function Editor({
                 <HistoryPlugin />
                 <AutoFocusPlugin />
                 {/* <TreeViewPlugin /> */}
+                <ExportPlugin />
             </div>
             </div>
         </LexicalComposer>

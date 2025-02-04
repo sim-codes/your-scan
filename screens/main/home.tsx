@@ -9,8 +9,8 @@ export default function MainScreen() {
     const [plainText, setPlainText] = useState("");
     const wordCount = editorState?.split(" ").length ?? 0;
 
-    console.log(plainText);
-    console.log(editorState);
+    // console.log(plainText);
+    // console.table(editorState);
 
     return (
         <SafeAreaView variant="screen" padding="sm">
