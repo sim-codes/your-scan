@@ -15,6 +15,7 @@ import ExampleTheme from "./ExampleTheme";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
 import TreeViewPlugin from "./plugins/TreeViewPlugin";
 import { $getRoot, EditorState, LexicalEditor } from "lexical";
+import { SavedFilesManager } from "./plugins/SaveFilePlugin";
 
 const placeholder = "Enter some rich text...";
 
@@ -70,10 +71,10 @@ export default function Editor({
                 <HistoryPlugin />
                 <AutoFocusPlugin />
                 {/* <TreeViewPlugin /> */}
+            </div>
+                </div>
                 <ExportPlugin />
-                <InitialValuePlugin initialValue={initialValue} />
-            </div>
-            </div>
+                <SavedFilesManager />
         </LexicalComposer>
         </>
     );

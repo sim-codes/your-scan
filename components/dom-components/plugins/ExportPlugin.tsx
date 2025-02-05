@@ -343,7 +343,6 @@ export const ExportPlugin = () => {
             <button onClick={exportToTxt} className="toolbar-item spaced">Export as TXT</button>
             <button onClick={exportToPdf} className="toolbar-item spaced">Export as PDF</button>
             <button onClick={exportToDocx} className="toolbar-item spaced">Export as DOCX</button>
-            <button onClick={exportToDocx} className="toolbar-item">Save</button>
         </div>
     );
 };
