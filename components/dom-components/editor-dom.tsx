@@ -9,6 +9,7 @@ import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { ExportPlugin } from "./plugins/ExportPlugin";
+import { InitialValuePlugin } from "./plugins/InitialValuePlugin";
 
 import ExampleTheme from "./ExampleTheme";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
@@ -30,9 +31,11 @@ const editorConfig = {
 export default function Editor({
     setPlainText,
     setEditorState,
+    initialValue,
 }: {
     setPlainText: React.Dispatch<React.SetStateAction<string>>;
     setEditorState: React.Dispatch<React.SetStateAction<string | null>>;
+    initialValue: string;
 }) {
     return (
         <>
@@ -68,6 +71,7 @@ export default function Editor({
                 <AutoFocusPlugin />
                 {/* <TreeViewPlugin /> */}
                 <ExportPlugin />
+                <InitialValuePlugin initialValue={initialValue} />
             </div>
             </div>
         </LexicalComposer>

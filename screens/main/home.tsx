@@ -14,13 +14,7 @@ export default function MainScreen() {
 
     return (
         <SafeAreaView variant="screen" padding="sm">
-            <View style={{ padding: 16 }}>
-                <BodyText style={{ fontSize: 20, fontWeight: "bold" }}>📱 Native Side</BodyText>
-                <BodyText style={{ fontSize: 16, marginVertical: 10 }}>{plainText}</BodyText>
-                <BodyText style={{ fontSize: 16 }}>Words: {wordCount}</BodyText>
-            </View>
-
-            <Editor setPlainText={setPlainText} setEditorState={setEditorState} />
+            <Editor setPlainText={setPlainText} setEditorState={setEditorState} initialValue="Some initial text" />
         </SafeAreaView>
     );
 }

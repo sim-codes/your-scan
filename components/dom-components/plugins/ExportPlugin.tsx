@@ -1,3 +1,4 @@
+import "../styles.css";
 import { $getRoot, $isElementNode } from 'lexical';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import jsPDF from 'jspdf';
@@ -338,10 +339,11 @@ export const ExportPlugin = () => {
     };
 
     return (
-        <div className="flex gap-2 mt-4">
+        <div className="toolbar" style={{ justifyContent: 'right' }}>
             <button onClick={exportToTxt} className="toolbar-item spaced">Export as TXT</button>
             <button onClick={exportToPdf} className="toolbar-item spaced">Export as PDF</button>
-            <button onClick={exportToDocx} className="toolbar-item">Export as DOCX</button>
+            <button onClick={exportToDocx} className="toolbar-item spaced">Export as DOCX</button>
+            <button onClick={exportToDocx} className="toolbar-item">Save</button>
         </div>
     );
 };
