@@ -4,15 +4,16 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import tw from 'twrnc';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '@/App';
+import { FileTypes } from '@/types/file';
 
-interface EditorProps {
-    // Your existing editor props
-}
+type Props = StackScreenProps<RootStackParamList, 'Home'>;
 
-export const SavedFilesManager = (props: EditorProps) => {
+export const SavedFilesManager = () => {
     const [editor] = useLexicalComposerContext();
-    const navigation = useNavigation();
-    const route = useRoute();
+    const navigation = useNavigation<Props['navigation']>();
+    const route = useRoute<Props['route']>();
     const [currentFileId, setCurrentFileId] = useState<string | null>(null);
     const [currentFileName, setCurrentFileName] = useState<string>('');
 
@@ -38,9 +39,9 @@ export const SavedFilesManager = (props: EditorProps) => {
                 
                 const filesIndex = await AsyncStorage.getItem(FILES_INDEX_KEY);
                 if (filesIndex) {
-                    const files = JSON.parse(filesIndex);
-                    const updated = files.map(file => 
-                        file.id === currentFileId 
+                    const files: FileTypes[] = JSON.parse(filesIndex);
+                    const updated = files.map(file =>
+                        file.id === currentFileId
                             ? { ...file, lastModified: new Date().toISOString(), content }
                             : file
                     );
@@ -59,7 +60,7 @@ export const SavedFilesManager = (props: EditorProps) => {
                 };
 
                 await AsyncStorage.setItem(STORAGE_KEY_PREFIX + newFileId, content);
-                
+
                 const filesIndex = await AsyncStorage.getItem(FILES_INDEX_KEY);
                 const files = filesIndex ? JSON.parse(filesIndex) : [];
                 files.push(newFile);
@@ -76,13 +77,13 @@ export const SavedFilesManager = (props: EditorProps) => {
     return (
         <View style={tw`flex-1`}>
             {/* Your existing editor components */}
-            
+
             <View style={tw`flex-row justify-between items-center p-4 bg-gray-100`}>
                 <Text style={tw`text-lg`}>
                     {currentFileName || 'Untitled'}
                 </Text>
                 <View style={tw`flex-row gap-2`}>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         style={tw`bg-blue-500 px-4 py-2 rounded`}
                         onPress={saveFile}
                     >
@@ -90,7 +91,7 @@ export const SavedFilesManager = (props: EditorProps) => {
                             {currentFileId ? 'Save' : 'Save As New'}
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         style={tw`bg-gray-500 px-4 py-2 rounded`}
                         onPress={() => navigation.navigate('File')}
                     >

@@ -6,7 +6,14 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SavedFilesScreen } from "./screens/main/files";
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+    Home: { fileId: string, fileName: string, content: string };
+    File: undefined;
+    Login?: undefined;
+    Register?: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 
 export default function App() {
@@ -17,9 +24,9 @@ export default function App() {
                 <Stack.Navigator>
                     {isAuthenticated ? (
                         <>
-                            <Stack.Screen name="Main" component={MainScreen} />
-                            <Stack.Screen name="File" component={SavedFilesScreen} />
-                            
+                            <Stack.Screen name="Home" component={MainScreen} />
+                            <Stack.Screen name="File" component={SavedFilesScreen}
+                            />
                         </>
                     ) : (
                             <>

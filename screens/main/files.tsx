@@ -3,6 +3,10 @@ import { View, Text, TouchableOpacity, FlatList, TextInput, Modal } from 'react-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'twrnc';
+import { navigationProps } from '@/types/routes';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '@/App';
 
 interface SavedFile {
     id: string;
@@ -13,9 +17,10 @@ interface SavedFile {
 }
 
 type SortOrder = 'name' | 'date' | 'lastModified';
+type Props = StackScreenProps<RootStackParamList, 'File'>;
 
 export const SavedFilesScreen = () => {
-    const navigation = useNavigation();
+    const navigation = useNavigation<Props['navigation']>();
     const [savedFiles, setSavedFiles] = useState<SavedFile[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -55,7 +60,7 @@ export const SavedFilesScreen = () => {
             const content = await AsyncStorage.getItem(STORAGE_KEY_PREFIX + file.id);
             if (content) {
                 // Navigate back to editor with file data
-                navigation.navigate('Main', {
+                navigation.navigate('Home', {
                     fileId: file.id,
                     fileName: file.name,
                     content: content
