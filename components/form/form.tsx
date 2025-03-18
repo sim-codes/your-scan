@@ -34,7 +34,7 @@ export const CustomInput = ({
                 secureTextEntry={isPassword && !isPasswordVisible}
                 placeholderTextColor="#999"
                 style={[
-                tw`flex-1 px-4 py-3 rounded-full border text-base h-14`,
+                tw`flex-1 px-4 py-2 rounded-md border border-[#0066FF] text-base`,
                 {
                     borderColor: error
                     ? COLORS.ERROR

@@ -6,9 +6,10 @@ import { FormField } from "@/components/form/form";
 import tw from "twrnc";
 import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Props } from "@/types/navigation";
 
 export default function RegisterScreen() {
-    const navigation = useNavigation();
+    const navigation = useNavigation<Props['navigation']>();
 
     const { control, handleSubmit } = useForm({
         defaultValues: {
@@ -24,9 +25,9 @@ export default function RegisterScreen() {
     };
     return (
         <SafeAreaView variant="screen" style={{ justifyContent: 'center'}}>
-            <View style={tw`android:my-8 ios:my-2`}>
+            <View style={tw`my-8 ios:my-2`}>
                 <HeaderText>Register</HeaderText>
-                <BodyText>Create an account to get started</BodyText>
+                <BodyText size="base">Register to secure your work </BodyText>
             </View>
 
             <FormField
@@ -84,6 +85,7 @@ export default function RegisterScreen() {
             />
 
             <CustomButton
+                style={tw`mt-5 ios:mt-2`}
                 onPress={() => {
 
                 }}

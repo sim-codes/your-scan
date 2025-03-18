@@ -1,5 +1,5 @@
 export type Display = "grid" | "list";
-export type SortOption = "most-recent" | "name" | "date" | "lastModified";
+export type SortOption = "most-recent" | "name" | "date";
 
 export type MeasureLayoutCallback = (
     x: number,

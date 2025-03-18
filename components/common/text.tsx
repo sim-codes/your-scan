@@ -23,7 +23,7 @@ export const HeaderText = ({ children, size = '4xl', ...props }: CustomTextProps
     <Text
         {...props}
         style={[
-        tw`${sizeMap[size]} font-bold text-purple-900 dark:text-white mb-2`,
+        tw`${sizeMap[size]} font-bold text-[#0066FF] dark:text-white mb-2`,
         props.style
         ]}
     >
@@ -35,7 +35,7 @@ export const BodyText = ({ children, size = 'xl', ...props }: CustomTextProps) =
     <Text
         {...props}
         style={[
-        tw`${sizeMap[size]} text-purple-800 dark:text-gray-300`,
+        tw`${sizeMap[size]} text-[#0066FF] dark:text-gray-300`,
         props.style
         ]}
     >

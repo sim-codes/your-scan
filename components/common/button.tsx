@@ -6,8 +6,8 @@ import { BodyText } from './text';
 
 // Define color constants
 export const COLORS = {
-    PRIMARY_START: '#7327F5',
-    PRIMARY_END: '#49178F',
+    PRIMARY_START: '#067ED3',
+    PRIMARY_END: '#0055B7',
     SECONDARY_START: '#LIGHTER_PURPLE',
     SECONDARY_END: '#DARKER_PURPLE',
     WHITE: '#FFFFFF',
@@ -32,7 +32,7 @@ export const CustomButton = ({
                 return {
                     gradient: [`${COLORS.PRIMARY_START}`, `${COLORS.PRIMARY_END}`] as const,
                     textStyle: tw`text-white font-semibold text-lg`,
-                    containerStyle: tw`px-4 py-3 rounded-full items-center justify-center h-14`
+                    containerStyle: tw`px-4 py-3 rounded-md items-center justify-center h-14`
                 };
             case 'secondary':
                 return {

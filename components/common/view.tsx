@@ -13,7 +13,7 @@ interface SafeAreaViewProps extends ViewProps {
 export const SafeAreaView = ({
     children,
     variant = 'default',
-    padding = 'sm',
+    padding = 'md',
     gap = 'none',
     includeSafeArea = true,
     style,

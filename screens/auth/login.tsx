@@ -6,9 +6,10 @@ import { FormField } from "@/components/form/form";
 import tw from "twrnc";
 import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Props } from "@/types/navigation";
 
 export default function LoginScreen() {
-    const navigation = useNavigation();
+    const navigation = useNavigation<Props['navigation']>();
 
     const { control, handleSubmit } = useForm({
         defaultValues: {
@@ -21,9 +22,11 @@ export default function LoginScreen() {
     // Handle form submission
     };
     return (
-        <SafeAreaView variant="screen" style={{ justifyContent: 'center'}}>
-            <HeaderText>Hello</HeaderText>
-            <HeaderText>Welcome Back!</HeaderText>
+        <SafeAreaView variant="screen" style={{ justifyContent: 'center' }}>
+            <View style={tw`my-8 ios:my-2`}>
+                <HeaderText>Hello</HeaderText>
+                <HeaderText>Welcome Back!</HeaderText>
+            </View>
 
             <FormField
                 control={control}
@@ -54,9 +57,10 @@ export default function LoginScreen() {
                     }}
             />
 
-            <BodyText style={tw`text-right mb-2 font-bold`} size="lg">Forgot password?</BodyText>
+            <BodyText style={tw`text-right mb-2`} size="base">Forgot password?</BodyText>
 
             <CustomButton
+                style={tw`mt-5 ios:mt-2`}
                 onPress={() => {
 
                 }}

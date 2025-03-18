@@ -13,8 +13,7 @@ export const FilterSortView = ({
     sortOptions = [
     { id: "most-recent", label: "Most Recent" },
     { id: "name", label: "Name" },
-    { id: "date", label: "Date" },
-    { id: "lastModified", label: "Last Modified" }
+    { id: "date", label: "Date" }
     ]
 }: FilterSortViewProps) => {
     const [display, setDisplay] = useState<Display>(initialDisplay);
@@ -75,7 +74,7 @@ export const FilterSortView = ({
     };
 
     return (
-        <View style={tw`flex-row gap-x-4 items-center justify-between`}>
+        <View style={tw`flex-row gap-x-4 items-center justify-between border-b-2 border-[#80B2FF] pb-4`}>
             <View style={tw`flex-row gap-x-4 items-center`}>
                 {/* Display toggle */}
                 <View style={tw`flex-row items-center border border-[#AACCFF] rounded-md overflow-hidden`}>
@@ -100,7 +99,7 @@ export const FilterSortView = ({
                 <TouchableOpacity
                     ref={sortButtonRef}
                     onPress={showDropdown}
-                    style={tw`p-2 flex-row gap-x-2 w-32 items-center justify-center border border-[#AACCFF] rounded-md`}
+                    style={tw`p-2 flex-row gap-x-2 w-32 items-center justify-between border border-[#AACCFF] rounded-md`}
                 >
                     <Text style={tw`text-[#0055D4]`}>
                         {sortOptions.find(option => option.id === sortOption)?.label}

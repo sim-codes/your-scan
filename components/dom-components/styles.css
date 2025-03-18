@@ -325,13 +325,16 @@ text-decoration: underline;
 }
 
 .toolbar {
-display: flex;
-margin-bottom: 1px;
-background: #fff;
-padding: 4px;
-border-top-left-radius: 10px;
-border-top-right-radius: 10px;
-vertical-align: middle;
+    position: absolute;
+    bottom: 5px;
+    align-items: center;
+    height: 50px;
+    display: flex;
+    margin: 1px;
+    background: #FAFAFA;
+    padding: 5px;
+    border-radius: 30px;
+    vertical-align: middle;
 }
 
 .toolbar button.toolbar-item {

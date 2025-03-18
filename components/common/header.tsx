@@ -9,8 +9,8 @@ type HomeHeaderProps = {
 
 export const HomeHeader = ({searchQuery, setSearchQuery}: HomeHeaderProps) => {
     return (
-        <View style={tw`w-full p-4 flex-row gap-x-2 items-center justify-between`}>
-            <View style={tw`p-2 w-74 flex-row border-[#AACCFF] border rounded-md`}>
+        <View style={tw`my-4 flex-row gap-x-2 items-center justify-between`}>
+            <View style={tw`p-2 w-70 flex-row border-[#AACCFF] border rounded-md`}>
             <TextInput
                     style={[
                         tw`w-full p-1`,
@@ -24,7 +24,9 @@ export const HomeHeader = ({searchQuery, setSearchQuery}: HomeHeaderProps) => {
             </View>
             <Feather name="settings" size={24} color="#0066FF" />
 
-            <View style={tw`bg-[#CCE0FF] rounded-full w-8 h-8`}></View>
+            <View style={tw`bg-[#CCE0FF] rounded-full w-8 h-8 p-1 items-center jutify-center`}>
+                <Feather name="user" size={20} color="#0066FF" />
+            </View>
         </View>
     );
 }

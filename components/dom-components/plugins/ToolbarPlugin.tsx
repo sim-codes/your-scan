@@ -96,7 +96,7 @@ export default function ToolbarPlugin() {
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
-                fill="currentColor"
+                fill="#0066FF"
                 className="bi bi-arrow-counterclockwise format"
                 viewBox="0 0 16 16"
                 >
@@ -119,7 +119,7 @@ export default function ToolbarPlugin() {
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
-                fill="currentColor"
+                fill="#0066FF"
                 className="bi bi-arrow-clockwise format"
                 viewBox="0 0 16 16"
                 >
@@ -142,7 +142,7 @@ export default function ToolbarPlugin() {
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
-                fill="currentColor"
+                fill="#0066FF"
                 className="bi bi-type-bold format"
                 viewBox="0 0 16 16"
                 >
@@ -160,7 +160,7 @@ export default function ToolbarPlugin() {
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
-                fill="currentColor"
+                fill="#0066FF"
                 className="bi bi-type-italic format"
                 viewBox="0 0 16 16"
                 >
@@ -178,7 +178,7 @@ export default function ToolbarPlugin() {
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
-                fill="currentColor"
+                fill="#0066FF"
                 className="bi bi-type-underline format"
                 viewBox="0 0 16 16"
                 >
@@ -196,7 +196,7 @@ export default function ToolbarPlugin() {
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
-                fill="currentColor"
+                fill="#0066FF"
                 className="bi bi-type-strikethrough format"
                 viewBox="0 0 16 16"
                 >
@@ -215,7 +215,7 @@ export default function ToolbarPlugin() {
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
-                fill="currentColor"
+                fill="#0066FF"
                 className="bi bi-text-left format"
                 viewBox="0 0 16 16"
                 >
@@ -236,7 +236,7 @@ export default function ToolbarPlugin() {
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
-                fill="currentColor"
+                fill="#0066FF"
                 className="bi bi-text-center format"
                 viewBox="0 0 16 16"
                 >
@@ -257,7 +257,7 @@ export default function ToolbarPlugin() {
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
-                fill="currentColor"
+                fill="#0066FF"
                 className="bi bi-text-right format"
                 viewBox="0 0 16 16"
                 >
@@ -278,7 +278,7 @@ export default function ToolbarPlugin() {
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
-                fill="currentColor"
+                fill="#0066FF"
                 className="bi bi-justify format"
                 viewBox="0 0 16 16"
                 >
