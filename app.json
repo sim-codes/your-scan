@@ -14,8 +14,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#0055B7"
+      },
+      "package": "com.sim_codes.yourscan"
     },
     "web": {
       "bundler": "metro",
@@ -30,12 +31,21 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#000000"
+          "backgroundColor": "#0055B7"
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "d7d180e7-0947-4aac-a0b5-ca015914041a"
+      }
+    },
+    "owner": "sim_codes"
   }
 }
