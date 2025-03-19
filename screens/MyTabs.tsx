@@ -11,7 +11,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const Tab = createMaterialTopTabNavigator();
 
-const FleNavigation = () => {
+const FileNavigation = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen name="Main" component={HomeScreen} options={{
@@ -33,7 +33,7 @@ export default function MyTabs() {
             tabBarPosition='bottom'
             keyboardDismissMode='on-drag'
         >
-            <Tab.Screen name="Home" component={FleNavigation}
+            <Tab.Screen name="Home" component={FileNavigation}
                 options={{
                     tabBarIndicator: () => null,
                     title: 'Home',
@@ -45,7 +45,7 @@ export default function MyTabs() {
             <Tab.Screen name="Upload" component={UploadScreen}
                 options={{
                     tabBarIndicator: () => null,
-                    title: 'Profile',
+                    title: 'Upload',
                     tabBarIcon: ({ color, focused }) => (
                         <TabBarIcon name={focused ? 'cloud-upload' : 'cloud-upload-outline'} color={color} />
                     ),

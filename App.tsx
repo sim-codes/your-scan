@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList } from '@/types/navigation';
 import LoginScreen from './screens/auth/login';
 import RegisterScreen from './screens/auth/register';
+import { CameraScreen } from './screens/main/camera';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -19,6 +20,7 @@ export default function App() {
                 {isAuthenticated ? (
                     <>
                         <MyTabs />
+                        <Stack.Screen name='Camera' component={CameraScreen} />
                     </>
                 ) : (
                         <Stack.Navigator>
