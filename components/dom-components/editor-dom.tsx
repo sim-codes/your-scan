@@ -37,6 +37,7 @@ export default function Editor({
     setCurrentFileId,
     currentFileName,
     setCurrentFileName,
+    goBack,
 }: {
     setPlainText: React.Dispatch<React.SetStateAction<string>>;
         setEditorState: React.Dispatch<React.SetStateAction<string | null>>;
@@ -44,6 +45,7 @@ export default function Editor({
         setCurrentFileId: React.Dispatch<React.SetStateAction<string | null>>;
         currentFileName: string;
         setCurrentFileName: React.Dispatch<React.SetStateAction<string>>;
+        goBack: () => void;
 }) {
     return (
         <>
@@ -86,6 +88,7 @@ export default function Editor({
                     setCurrentFileId={setCurrentFileId}
                     currentFileName={currentFileName}
                     setCurrentFileName={setCurrentFileName}
+                    goBack={goBack}
                 />
         </LexicalComposer>
         </>

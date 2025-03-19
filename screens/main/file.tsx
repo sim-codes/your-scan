@@ -27,6 +27,11 @@ export const EditorScreen = () => {
         }
     }, [route.params]);
 
+    // back to home screen
+    const goBack = () => {
+        navigation.navigate('Main');
+    };
+
     console.log(JSON.stringify(editorState))
 
     return (
@@ -38,6 +43,7 @@ export const EditorScreen = () => {
                 setCurrentFileId={setCurrentFileId}
                 currentFileName={currentFileName}
                 setCurrentFileName={setCurrentFileName}
+                goBack={goBack}
             />
         </SafeAreaView>
     );

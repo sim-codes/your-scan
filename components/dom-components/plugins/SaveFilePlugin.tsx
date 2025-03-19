@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import tw from 'twrnc';
-import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '@/types/navigation';
 import { FileTypes } from '@/types/file';
 import { STORAGE_KEY_PREFIX, FILES_INDEX_KEY } from '@/constants';
 import { FileManagerProps } from '@/types/file';
 
-export const SavedFilesManager = (
-    { currentFileId, setCurrentFileId, currentFileName, setCurrentFileName }: FileManagerProps
+export const SavedFilesManager = ({
+    currentFileId,
+    setCurrentFileId,
+    currentFileName,
+    setCurrentFileName,
+    goBack }
+    : FileManagerProps
 ) => {
     const [editor] = useLexicalComposerContext();
 
@@ -77,7 +79,7 @@ export const SavedFilesManager = (
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={tw`bg-gray-500 px-4 py-2 rounded`}
-                        // onPress={() => navigation.navigate('File')}
+                        onPress={() => goBack()}
                     >
                         <Text style={tw`text-white`}>Open Files</Text>
                     </TouchableOpacity>
