@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
@@ -11,10 +12,17 @@ export const SavedFilesManager = ({
     setCurrentFileId,
     currentFileName,
     setCurrentFileName,
-    goBack }
+    goBack,
+    content}
     : FileManagerProps
 ) => {
     const [editor] = useLexicalComposerContext();
+
+    useEffect(() => {
+        if (content.length > 0) {
+            editor.setEditorState(editor.parseEditorState(content))
+        }
+    }, [content]);
 
     const saveFile = async () => {
         try {

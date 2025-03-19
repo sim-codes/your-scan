@@ -12,4 +12,5 @@ export interface FileManagerProps {
     currentFileName: string;
     setCurrentFileName: React.Dispatch<React.SetStateAction<string>>;
     goBack: () => void;
+    content: string;
 }

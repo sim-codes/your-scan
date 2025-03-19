@@ -39,7 +39,6 @@ export const HomeScreen = () => {
     const loadSavedFiles = async () => {
         try {
             const filesIndex = await AsyncStorage.getItem(FILES_INDEX_KEY);
-            console.log(filesIndex)
             if (filesIndex) {
                 setSavedFiles(JSON.parse(filesIndex));
             }
