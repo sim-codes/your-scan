@@ -16,11 +16,12 @@ import ToolbarPlugin from "./plugins/ToolbarPlugin";
 import TreeViewPlugin from "./plugins/TreeViewPlugin";
 import { $getRoot, EditorState, LexicalEditor } from "lexical";
 import { SavedFilesManager } from "./plugins/SaveFilePlugin";
+import { FileManagerProps } from "@/types/file";
 
 const placeholder = "Enter some rich text...";
 
 const editorConfig = {
-    namespace: "React.js Demo",
+    namespace: "RichTextEditor",
     nodes: [],
     // Handling of errors during update
     onError(error: Error) {
@@ -32,11 +33,17 @@ const editorConfig = {
 export default function Editor({
     setPlainText,
     setEditorState,
-    initialValue,
+    currentFileId,
+    setCurrentFileId,
+    currentFileName,
+    setCurrentFileName,
 }: {
     setPlainText: React.Dispatch<React.SetStateAction<string>>;
-    setEditorState: React.Dispatch<React.SetStateAction<string | null>>;
-    initialValue: string;
+        setEditorState: React.Dispatch<React.SetStateAction<string | null>>;
+        currentFileId: string | null;
+        setCurrentFileId: React.Dispatch<React.SetStateAction<string | null>>;
+        currentFileName: string;
+        setCurrentFileName: React.Dispatch<React.SetStateAction<string>>;
 }) {
     return (
         <>
@@ -74,7 +81,12 @@ export default function Editor({
             </div>
                 </div>
                 <ExportPlugin />
-                <SavedFilesManager />
+                <SavedFilesManager
+                    currentFileId={currentFileId}
+                    setCurrentFileId={setCurrentFileId}
+                    currentFileName={currentFileName}
+                    setCurrentFileName={setCurrentFileName}
+                />
         </LexicalComposer>
         </>
     );

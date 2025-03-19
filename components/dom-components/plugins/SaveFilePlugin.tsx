@@ -1,33 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
-// import { useNavigation, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import tw from 'twrnc';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '@/types/navigation';
 import { FileTypes } from '@/types/file';
+import { STORAGE_KEY_PREFIX, FILES_INDEX_KEY } from '@/constants';
+import { FileManagerProps } from '@/types/file';
 
-// type Props = StackScreenProps<RootStackParamList, 'File'>;
-
-export const SavedFilesManager = () => {
+export const SavedFilesManager = (
+    { currentFileId, setCurrentFileId, currentFileName, setCurrentFileName }: FileManagerProps
+) => {
     const [editor] = useLexicalComposerContext();
-    // const navigation = useNavigation<Props['navigation']>();
-    // const route = useRoute<Props['route']>();
-    const [currentFileId, setCurrentFileId] = useState<string | null>(null);
-    const [currentFileName, setCurrentFileName] = useState<string>('');
-
-    const STORAGE_KEY_PREFIX = '@editor_file_';
-    const FILES_INDEX_KEY = '@editor_files_index';
-
-    // useEffect(() => {
-    //     // Handle file data from navigation params
-    //     if (route.params?.fileId && route.params?.content) {
-    //         setCurrentFileId(route.params.fileId);
-    //         setCurrentFileName(route.params.fileName);
-    //         editor.setEditorState(editor.parseEditorState(route.params.content));
-    //     }
-    // }, [route.params]);
 
     const saveFile = async () => {
         try {

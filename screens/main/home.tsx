@@ -10,6 +10,7 @@ import { Display, SortOption } from '@/types/home';
 import Feather from '@expo/vector-icons/Feather';
 import { Props } from '@/types/navigation';
 import { LinearGradient } from 'expo-linear-gradient';
+import { STORAGE_KEY_PREFIX, FILES_INDEX_KEY } from '@/constants';
 
 
 interface SavedFile {
@@ -33,9 +34,6 @@ export const HomeScreen = () => {
     const [newFileName, setNewFileName] = useState('');
     const [fileToRename, setFileToRename] = useState<SavedFile | null>(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
-
-    const STORAGE_KEY_PREFIX = '@editor_file_';
-    const FILES_INDEX_KEY = '@editor_files_index';
 
     // Load saved files index
     const loadSavedFiles = async () => {
@@ -143,7 +141,7 @@ export const HomeScreen = () => {
         navigation.navigate('File', {
             fileId: "",
             fileName: "",
-            content: ""
+            content: "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Text and images you copy will automatically show here\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1,\"textFormat\":0,\"textStyle\":\"\"}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
         });
     };
 
