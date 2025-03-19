@@ -20,7 +20,6 @@ export const SavedFilesManager = ({
         try {
             const content = JSON.stringify(editor.getEditorState().toJSON());
             if (currentFileId) {
-                // Update existing file
                 await AsyncStorage.setItem(STORAGE_KEY_PREFIX + currentFileId, content);
 
                 const filesIndex = await AsyncStorage.getItem(FILES_INDEX_KEY);
@@ -45,15 +44,7 @@ export const SavedFilesManager = ({
                     content
                 };
 
-                await AsyncStorage.setItem(STORAGE_KEY_PREFIX + newFileId, content);
-
-                const filesIndex = await AsyncStorage.getItem(FILES_INDEX_KEY);
-                const files = filesIndex ? JSON.parse(filesIndex) : [];
-                files.push(newFile);
-                await AsyncStorage.setItem(FILES_INDEX_KEY, JSON.stringify(files));
-
-                setCurrentFileId(newFileId);
-                setCurrentFileName(newFileName);
+                
             }
         } catch (error) {
             console.error('Error saving file:', error);

@@ -32,8 +32,6 @@ export const EditorScreen = () => {
         navigation.navigate('Main');
     };
 
-    console.log(JSON.stringify(editorState))
-
     return (
         <SafeAreaView variant="screen" padding="sm">
             <Editor
