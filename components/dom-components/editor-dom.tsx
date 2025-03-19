@@ -73,7 +73,7 @@ export default function Editor({
                 {/* <TreeViewPlugin /> */}
             </div>
                 </div>
-                {/* <ExportPlugin /> */}
+                <ExportPlugin />
                 <SavedFilesManager />
         </LexicalComposer>
         </>

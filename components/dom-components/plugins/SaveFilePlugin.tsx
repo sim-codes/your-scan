@@ -1,42 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+// import { useNavigation, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import tw from 'twrnc';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '@/App';
+import { RootStackParamList } from '@/types/navigation';
 import { FileTypes } from '@/types/file';
 
-type Props = StackScreenProps<RootStackParamList, 'Home'>;
+// type Props = StackScreenProps<RootStackParamList, 'File'>;
 
 export const SavedFilesManager = () => {
     const [editor] = useLexicalComposerContext();
-    const navigation = useNavigation<Props['navigation']>();
-    const route = useRoute<Props['route']>();
+    // const navigation = useNavigation<Props['navigation']>();
+    // const route = useRoute<Props['route']>();
     const [currentFileId, setCurrentFileId] = useState<string | null>(null);
     const [currentFileName, setCurrentFileName] = useState<string>('');
 
     const STORAGE_KEY_PREFIX = '@editor_file_';
     const FILES_INDEX_KEY = '@editor_files_index';
 
-    useEffect(() => {
-        // Handle file data from navigation params
-        if (route.params?.fileId && route.params?.content) {
-            setCurrentFileId(route.params.fileId);
-            setCurrentFileName(route.params.fileName);
-            editor.setEditorState(editor.parseEditorState(route.params.content));
-        }
-    }, [route.params]);
+    // useEffect(() => {
+    //     // Handle file data from navigation params
+    //     if (route.params?.fileId && route.params?.content) {
+    //         setCurrentFileId(route.params.fileId);
+    //         setCurrentFileName(route.params.fileName);
+    //         editor.setEditorState(editor.parseEditorState(route.params.content));
+    //     }
+    // }, [route.params]);
 
     const saveFile = async () => {
         try {
             const content = JSON.stringify(editor.getEditorState().toJSON());
-            
             if (currentFileId) {
                 // Update existing file
                 await AsyncStorage.setItem(STORAGE_KEY_PREFIX + currentFileId, content);
-                
+
                 const filesIndex = await AsyncStorage.getItem(FILES_INDEX_KEY);
                 if (filesIndex) {
                     const files: FileTypes[] = JSON.parse(filesIndex);
@@ -75,10 +74,10 @@ export const SavedFilesManager = () => {
     };
 
     return (
-        <View style={tw`flex-1`}>
+        <View style={tw`flex-1 absolute bottom-20`}>
             {/* Your existing editor components */}
 
-            <View style={tw`flex-row justify-between items-center p-4 bg-gray-100`}>
+            <View style={tw`flex-row justify-between gap-x-5 items-center p-4 bg-gray-100`}>
                 <Text style={tw`text-lg`}>
                     {currentFileName || 'Untitled'}
                 </Text>
@@ -93,7 +92,7 @@ export const SavedFilesManager = () => {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={tw`bg-gray-500 px-4 py-2 rounded`}
-                        onPress={() => navigation.navigate('File')}
+                        // onPress={() => navigation.navigate('File')}
                     >
                         <Text style={tw`text-white`}>Open Files</Text>
                     </TouchableOpacity>

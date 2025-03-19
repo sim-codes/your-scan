@@ -339,7 +339,7 @@ export const ExportPlugin = () => {
     };
 
     return (
-        <div className="toolbar" style={{ justifyContent: 'right' }}>
+        <div className="exportbar">
             <button onClick={exportToTxt} className="toolbar-item spaced">Export as TXT</button>
             <button onClick={exportToPdf} className="toolbar-item spaced">Export as PDF</button>
             <button onClick={exportToDocx} className="toolbar-item spaced">Export as DOCX</button>

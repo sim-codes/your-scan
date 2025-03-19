@@ -66,6 +66,9 @@ h1 {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     flex: 1;
+    flex-direction: row;
+    height: 700;
+    max-height: "100%";
 }
 
 .editor-inner {
@@ -325,6 +328,7 @@ text-decoration: underline;
 }
 
 .toolbar {
+    right: 20;
     position: absolute;
     bottom: 5px;
     align-items: center;
@@ -335,6 +339,23 @@ text-decoration: underline;
     padding: 5px;
     border-radius: 30px;
     vertical-align: middle;
+}
+
+.exportbar {
+    bottom: 20;
+    position: absolute;
+    justify-items: center;
+    align-items: center;
+    height: 50px;
+    display: flex;
+    gap: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    vertical-align: middle;
+}
+
+.exportbar button {
+    padding: 10px;
 }
 
 .toolbar button.toolbar-item {

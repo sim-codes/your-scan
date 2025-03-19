@@ -13,7 +13,7 @@ export const HomeHeader = ({searchQuery, setSearchQuery}: HomeHeaderProps) => {
             <View style={tw`p-2 w-70 flex-row border-[#AACCFF] border rounded-md`}>
             <TextInput
                     style={[
-                        tw`w-full p-1`,
+                        tw`w-[90%] p-1`,
                         { borderWidth: 0, outlineStyle: 'none', outlineWidth: 0 }
                     ]}
                     placeholder="Search for files"
