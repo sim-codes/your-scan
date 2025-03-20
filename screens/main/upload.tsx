@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "@/components/common/view";
-import { Pressable, Text, View, Image } from "react-native";
+import { Pressable, Text, View, Image, ActivityIndicator, Alert } from "react-native";
 import tw from 'twrnc';
 import Feather from '@expo/vector-icons/Feather';
 import { ImagePickerButton } from "@/components/image-picker";
 // import * as ImagePicker from "expo-image-picker";
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Props } from "@/types/navigation";
+// import { Props } from "@/types/navigation";
 import { CustomButton } from "@/components/common/button";
 import { BodyText } from "@/components/common/text";
 import { LinearGradient } from "expo-linear-gradient";
+import cloudinaryService from "@/lib/cloudinary";
+import type { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from "@/types/navigation";
+import { toLexicalFormat } from "@/lexical-format";
+
+export type Props = StackScreenProps<RootStackParamList, 'File'>;
 
 interface ImageDetailsType {
     name: string;
@@ -18,10 +24,19 @@ interface ImageDetailsType {
     uri: string;
 }
 
+interface ImageToTextResponse {
+    all_text: string;
+    annonations: string[];
+    lang: string;
+}
+
+const API_KEY = process.env.EXPO_PUBLIC_API_LAYER_API_KEY!;
+
 export const UploadScreen = () => {
     const navigation = useNavigation<Props['navigation']>();
     const [image, setImage] = useState<string | null>(null);
     const [imageData, setImageData] = useState<ImageDetailsType | null>(null);
+    const [isScanning, setIsScanning] = useState<boolean>(false);
 
     useEffect(() => {
         getImageDetails();
@@ -75,9 +90,64 @@ export const UploadScreen = () => {
         return `${sizeInMB.toFixed(1)}MB`;
     }
 
+    const scanForText = async () => {
+        if (!image || !imageData) return;
+
+        setIsScanning(true);
+        try {
+            const imageUrl = await cloudinaryService.handleImageUpload(image);
+            console.log("Image URL:", imageUrl);
+
+            if (!imageUrl) {
+                Alert.alert("Error", "Failed to upload image. Please try again.");
+                return;
+            }
+            const response = await fetch(`https://api.apilayer.com/image_to_text/url?url=${imageUrl}`, {
+                method: 'GET',
+                headers: {
+                    'apikey': API_KEY,
+                }
+            });
+            const data = await response.json() as ImageToTextResponse;
+            console.log("Data:", data);
+
+            if (data?.all_text) {
+                console.log("Scanned text:", data.all_text);
+                navigation.navigate('Home', {
+                    screen: 'File',
+                    params: {
+                        fileId: Date.now().toString(),
+                        fileName: "Scan Result",
+                        content: toLexicalFormat(data.all_text),
+                    }
+                });
+
+                setImage(null);
+            }
+        } catch (error) {
+            console.error("Error scanning image:", error);
+            Alert.alert("Error", "Failed to scan image. Please try again.");
+        } finally {
+            setIsScanning(false);
+        }
+    };
+
     return (
         <SafeAreaView style={tw`flex-1 items-center justify-center bg-white gap-y-4`}>
             <Text style={tw`self-start mb-10 mt-2 font-semibold text-2xl text-[#0055D4]`}>Upload Image</Text>
+
+            <Pressable
+                onPress={() => {
+                    navigation.navigate('Home', {
+                        screen: 'File',
+                        params: {
+                            fileId: "",
+                            fileName: "Scan Result",
+                            content: toLexicalFormat("Hello World"),
+                        }
+                    });
+                }}
+            ><BodyText>Open File</BodyText></Pressable>
 
             <View style={tw`w-full h-60 border-2 p-4 gap-2 border-dashed border-[#1849D6] rounded-xl items-center justify-center`}>
                 {!image ? (
@@ -112,12 +182,6 @@ export const UploadScreen = () => {
                                         <Feather name="trash-2" size={24} color="#FF3944" />
                                     </Pressable>
                                     <ImagePickerButton selectedImage={image} setSelectedImage={setImage} />
-                                    {/* <Pressable
-                                        onPress={() => setImage(null)}
-                                        style={tw`bg-[#F6F6F6] rounded-full py-3 px-5 flex-row gap-x-2 items-center`}>
-                                        <Feather name="upload" size={24} color="black" />
-                                        <Text>Upload new image</Text>
-                                    </Pressable> */}
                                 </View>
                             </View>
                         </View>
@@ -134,15 +198,26 @@ export const UploadScreen = () => {
                     }}
                     style={tw`flex-row items-center gap-x-2 px-4 py-2 border border-[#AACCFF] rounded-md`}>
                     <Feather name="camera" size={24} color="#0066FF" />
-                    <Text style={tw`text-[#0066FF]`}>Camera</Text>
+                <Text style={tw`text-[#0066FF]`}>Camera</Text>
                 </Pressable>
             </View>
             ): (
-                    <Pressable style={tw`w-full`}>
-                        <LinearGradient colors={['#067ED3', '#0055B7']} style={tw`px-4 py-3 rounded-md items-center justify-center h-14`}>
-                            <Text style={tw`text-white text-lg text-center font-bold`}>Scan for Text</Text>
-                        </LinearGradient>
-                </Pressable>
+                <Pressable
+                style={tw`w-full`}
+                onPress={scanForText}
+                disabled={isScanning}
+            >
+                <LinearGradient colors={['#067ED3', '#0055B7']} style={tw`px-4 py-3 rounded-md items-center justify-center h-14 flex-row`}>
+                    {isScanning ? (
+                        <>
+                            <ActivityIndicator size="small" color="white" style={tw`mr-2`} />
+                            <Text style={tw`text-white text-lg text-center font-bold`}>Scanning...</Text>
+                        </>
+                    ) : (
+                        <Text style={tw`text-white text-lg text-center font-bold`}>Scan for Text</Text>
+                    )}
+                </LinearGradient>
+            </Pressable>
             )}
         </SafeAreaView>
     );
