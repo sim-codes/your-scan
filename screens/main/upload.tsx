@@ -111,12 +111,13 @@ export const UploadScreen = () => {
                                         style={tw`rounded-full bg-[#FFD1D4] h-14 w-14 p-1 items-center justify-center`}>
                                         <Feather name="trash-2" size={24} color="#FF3944" />
                                     </Pressable>
-                                    <Pressable
+                                    <ImagePickerButton selectedImage={image} setSelectedImage={setImage} />
+                                    {/* <Pressable
                                         onPress={() => setImage(null)}
                                         style={tw`bg-[#F6F6F6] rounded-full py-3 px-5 flex-row gap-x-2 items-center`}>
                                         <Feather name="upload" size={24} color="black" />
                                         <Text>Upload new image</Text>
-                                    </Pressable>
+                                    </Pressable> */}
                                 </View>
                             </View>
                         </View>
@@ -125,7 +126,7 @@ export const UploadScreen = () => {
 
             {!image ? (
             <View style={tw`flex-row gap-x-4 items-center justify-center`}>
-                <ImagePickerButton setSelectedImage={setImage} />
+                <ImagePickerButton selectedImage={image} setSelectedImage={setImage} />
 
                 <Pressable
                     onPress={() => {
