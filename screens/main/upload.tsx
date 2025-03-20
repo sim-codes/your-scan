@@ -4,33 +4,17 @@ import { Pressable, Text, View, Image, ActivityIndicator, Alert } from "react-na
 import tw from 'twrnc';
 import Feather from '@expo/vector-icons/Feather';
 import { ImagePickerButton } from "@/components/image-picker";
-// import * as ImagePicker from "expo-image-picker";
-import { useNavigation, useRoute } from '@react-navigation/native';
-// import { Props } from "@/types/navigation";
-import { CustomButton } from "@/components/common/button";
+import { useNavigation } from '@react-navigation/native';
 import { BodyText } from "@/components/common/text";
 import { LinearGradient } from "expo-linear-gradient";
 import cloudinaryService from "@/lib/cloudinary";
 import type { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from "@/types/navigation";
 import { toLexicalFormat } from "@/lexical-format";
+import { API_KEY } from "@/constants";
+import { ImageDetailsType, ImageToTextResponse } from "@/types/image";
 
 export type Props = StackScreenProps<RootStackParamList, 'File'>;
-
-interface ImageDetailsType {
-    name: string;
-    size: number;
-    type: string;
-    uri: string;
-}
-
-interface ImageToTextResponse {
-    all_text: string;
-    annonations: string[];
-    lang: string;
-}
-
-const API_KEY = process.env.EXPO_PUBLIC_API_LAYER_API_KEY!;
 
 export const UploadScreen = () => {
     const navigation = useNavigation<Props['navigation']>();
@@ -96,7 +80,6 @@ export const UploadScreen = () => {
         setIsScanning(true);
         try {
             const imageUrl = await cloudinaryService.handleImageUpload(image);
-            console.log("Image URL:", imageUrl);
 
             if (!imageUrl) {
                 Alert.alert("Error", "Failed to upload image. Please try again.");
@@ -109,7 +92,6 @@ export const UploadScreen = () => {
                 }
             });
             const data = await response.json() as ImageToTextResponse;
-            console.log("Data:", data);
 
             if (data?.all_text) {
                 console.log("Scanned text:", data.all_text);
@@ -135,19 +117,6 @@ export const UploadScreen = () => {
     return (
         <SafeAreaView style={tw`flex-1 items-center justify-center bg-white gap-y-4`}>
             <Text style={tw`self-start mb-10 mt-2 font-semibold text-2xl text-[#0055D4]`}>Upload Image</Text>
-
-            <Pressable
-                onPress={() => {
-                    navigation.navigate('Home', {
-                        screen: 'File',
-                        params: {
-                            fileId: "",
-                            fileName: "Scan Result",
-                            content: toLexicalFormat("Hello World"),
-                        }
-                    });
-                }}
-            ><BodyText>Open File</BodyText></Pressable>
 
             <View style={tw`w-full h-60 border-2 p-4 gap-2 border-dashed border-[#1849D6] rounded-xl items-center justify-center`}>
                 {!image ? (
@@ -178,7 +147,7 @@ export const UploadScreen = () => {
                                 <View style={tw`flex-row gap-x-2 items-center`}>
                                     <Pressable
                                         onPress={() => setImage(null)}
-                                        style={tw`rounded-full bg-[#FFD1D4] h-14 w-14 p-1 items-center justify-center`}>
+                                        style={tw`rounded-full bg-[#FFD1D4] h-10 w-10 android:h-14 android:w-14 p-1 items-center justify-center`}>
                                         <Feather name="trash-2" size={24} color="#FF3944" />
                                     </Pressable>
                                     <ImagePickerButton selectedImage={image} setSelectedImage={setImage} />

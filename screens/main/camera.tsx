@@ -1,4 +1,4 @@
-import { View, Dimensions, TouchableOpacity, Button, Image } from "react-native";
+import { View, Dimensions, TouchableOpacity, Button, Image, Alert, ActivityIndicator } from "react-native";
 import { BodyText } from "@/components/common/text";
 import tw from "twrnc";
 import { useRef, useState } from "react";
@@ -8,10 +8,19 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { CameraView, useCameraPermissions, CameraPictureOptions, CameraType } from "expo-camera";
 import { SafeAreaView } from "@/components/common/view";
 import { useNavigation } from "@react-navigation/native";
+import cloudinaryService from "@/lib/cloudinary";
+import { API_KEY } from "@/constants";
+import { ImageToTextResponse } from "@/types/image";
+import { toLexicalFormat } from "@/lexical-format";
+import type { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from "@/types/navigation";
+
+export type Props = StackScreenProps<RootStackParamList, 'File'>;
+
 
 export const CameraScreen = () => {
-    const navigation = useNavigation();
-
+    const navigation = useNavigation<Props['navigation']>();
+    const [isScanning, setIsScanning] = useState<boolean>(false);
     const [permission, requestPermission] = useCameraPermissions();
     const ref = useRef<CameraView>(null);
     const [uri, setUri] = useState<string | undefined>(undefined);
@@ -37,6 +46,42 @@ export const CameraScreen = () => {
     function toggleCameraFacing() {
         setFacing(current => (current === 'back' ? 'front' : 'back'));
     }
+
+    const scanForText = async () => {
+        if (!uri) return;
+
+        setIsScanning(true);
+        try {
+            const imageUrl = await cloudinaryService.handleImageUpload(uri);
+
+            if (!imageUrl) {
+                Alert.alert("Error", "Failed to upload image. Please try again.");
+                return;
+            }
+            const response = await fetch(`https://api.apilayer.com/image_to_text/url?url=${imageUrl}`, {
+                method: 'GET',
+                headers: {
+                    'apikey': API_KEY,
+                }
+            });
+            const data = await response.json() as ImageToTextResponse;
+
+            if (data?.all_text) {
+                navigation.navigate('File', {
+                    fileId: Date.now().toString(),
+                    fileName: "Scan Result",
+                    content: toLexicalFormat(data.all_text),
+                });
+
+                setUri(undefined);
+            }
+        } catch (error) {
+            console.error("Error scanning image:", error);
+            Alert.alert("Error", "Failed to scan image. Please try again.");
+        } finally {
+            setIsScanning(false);
+        }
+    };
 
     const renderCamera = () => {
         return (
@@ -108,8 +153,12 @@ export const CameraScreen = () => {
                         <TouchableOpacity onPress={() => setUri(undefined)} style={tw`rounded-full h-16 w-16 bg-[#2B2B2B] border-2 border-[#CCCCCC] items-center justify-center`} >
                             <Feather name="rotate-cw" size={24} color="white" />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={takePicture} style={tw`bg-[#2B80FF] items-center justify-center rounded-full h-16 w-16 border-2 border-[#CCCCCC]`}>
-                            <Feather name="check" size={24} color="white" />
+                        <TouchableOpacity onPress={scanForText} style={tw`bg-[#2B80FF] items-center justify-center rounded-full h-16 w-16 border-2 border-[#CCCCCC]`}>
+                            {isScanning ? (
+                                <ActivityIndicator color="white" />
+                            ) : (
+                                <Feather name="check" size={24} color="white" />
+                            )}
                         </TouchableOpacity>
                         </View>
                     </View>
@@ -124,7 +173,6 @@ export const CameraScreen = () => {
             };
             const photo = await ref.current?.takePictureAsync(options);
             setUri(photo?.uri);
-            console.log(photo?.uri);
         };
     }
 

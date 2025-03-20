@@ -41,8 +41,8 @@ export const ImagePickerButton = ({
             ): (
             <Pressable
                 onPress={pickImageAsync}
-                style={tw`bg-[#F6F6F6] rounded-full py-3 px-5 flex-row gap-x-2 items-center`}>
-                <Feather name="upload" size={24} color="black" />
+                style={tw`bg-[#F6F6F6] rounded-full py-1 px-2 andoroid:py-3 andoird:px-5 flex-row gap-x-2 items-center`}>
+                <Feather name="upload" size={24} color="black" style={tw`hidden android:flex`} />
                 <Text>Upload new image</Text>
             </Pressable>
             )}

@@ -243,18 +243,6 @@ export const HomeScreen = () => {
         );
     };
 
-    const testStorage = async () => {
-        try {
-            await AsyncStorage.setItem('test-key', 'test-value');
-            const value = await AsyncStorage.getItem('test-key');
-            console.log('Storage test result:', value === 'test-value' ? 'SUCCESS' : 'FAILED');
-            alert(`Storage test: ${value === 'test-value' ? 'SUCCESS' : 'FAILED'}`);
-        } catch (error: any) {
-            console.error('Storage test error:', error);
-            alert(`Storage test failed: ${error?.message}`);
-        }
-    };
-
     return (
         <SafeAreaView style={tw`flex-1 bg-white gap-y-4`}>
             <HomeHeader searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
@@ -270,13 +258,6 @@ export const HomeScreen = () => {
                     { id: "date", label: "Date" }
                 ]}
                 />
-
-            <TouchableOpacity
-                style={tw`bg-green-500 px-4 py-2 rounded`}
-                onPress={testStorage}
-            >
-                <Text style={tw`text-white`}>Test Storage</Text>
-            </TouchableOpacity>
 
             {isLoading ? (
                 <Text style={tw`p-4`}>Loading...</Text>
