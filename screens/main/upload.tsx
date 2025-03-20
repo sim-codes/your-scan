@@ -80,6 +80,7 @@ export const UploadScreen = () => {
         setIsScanning(true);
         try {
             const imageUrl = await cloudinaryService.handleImageUpload(image);
+            console.log("Image URL:", imageUrl);
 
             if (!imageUrl) {
                 Alert.alert("Error", "Failed to upload image. Please try again.");
