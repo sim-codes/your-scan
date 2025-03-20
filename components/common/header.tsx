@@ -24,7 +24,7 @@ export const HomeHeader = ({searchQuery, setSearchQuery}: HomeHeaderProps) => {
             </View>
             <Feather name="settings" size={24} color="#0066FF" />
 
-            <View style={tw`bg-[#CCE0FF] rounded-full w-8 h-8 p-1 items-center jutify-center`}>
+            <View style={tw`bg-[#CCE0FF] rounded-full w-8 h-8 p-1 items-center justify-center`}>
                 <Feather name="user" size={20} color="#0066FF" />
             </View>
         </View>

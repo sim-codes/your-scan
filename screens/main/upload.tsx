@@ -5,10 +5,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { ImagePickerButton } from "@/components/image-picker";
 // import * as ImagePicker from "expo-image-picker";
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '@/types/navigation';
-
-type Props = StackScreenProps<RootStackParamList, 'File'>;
+import { Props } from "@/types/navigation";
 export const UploadScreen = () => {
     const navigation = useNavigation<Props['navigation']>();
 

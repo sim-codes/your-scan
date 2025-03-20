@@ -7,6 +7,7 @@ export type RootStackParamList = {
     Register?: undefined;
     Camera?: undefined;
     UploadStart?: undefined;
+    Tabs: undefined;
 };
 
 export type Props = StackScreenProps<RootStackParamList, 'File'>;

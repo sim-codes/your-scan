@@ -17,21 +17,21 @@ export default function App() {
     return (
         <SafeAreaProvider>
             <NavigationContainer>
-                {isAuthenticated ? (
-                    <>
-                        <MyTabs />
-                        <Stack.Screen name='Camera' component={CameraScreen} />
-                    </>
-                ) : (
-                        <Stack.Navigator>
-                            <Stack.Screen name='Login' component={LoginScreen} options={{
-                                headerShown: false
-                            }} />
-                            <Stack.Screen name='Register' component={RegisterScreen} options={{
-                                headerShown: false
-                            }} />
-                        </Stack.Navigator>
-                )}
+                <Stack.Navigator>
+                    <Stack.Screen name='Tabs' component={MyTabs} options={{
+                        headerShown: false
+                    }} />
+                    <Stack.Screen name='Camera' component={CameraScreen} options={{
+                        headerShown: false
+                    }}
+                    />
+                    <Stack.Screen name='Login' component={LoginScreen} options={{
+                        headerShown: false
+                    }} />
+                    <Stack.Screen name='Register' component={RegisterScreen} options={{
+                        headerShown: false
+                    }} />
+                </Stack.Navigator>
             </NavigationContainer >
         </SafeAreaProvider>
     );
