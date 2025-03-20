@@ -120,7 +120,7 @@ export const CameraScreen = () => {
     const takePicture = async () => {
         if (ref.current) {
             const options: CameraPictureOptions = {
-                // shutterSound: false,
+                shutterSound: false,
             };
             const photo = await ref.current?.takePictureAsync(options);
             setUri(photo?.uri);
