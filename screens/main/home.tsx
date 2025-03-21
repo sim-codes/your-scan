@@ -137,7 +137,7 @@ export const HomeScreen = () => {
     };
 
     const handleAddNewFile = () => {
-        navigation.navigate('File', {
+        navigation.navigate('Editor', {
             fileId: "",
             fileName: "",
             content: ""

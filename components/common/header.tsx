@@ -1,13 +1,18 @@
 import tw from 'twrnc';
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, Pressable, TouchableOpacity } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
+import { BodyText } from './text';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useState } from 'react';
+import { Drawer } from 'react-native-drawer-layout';
+import { CustomButton } from './button';
 
 type HomeHeaderProps = {
     searchQuery: string;
     setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const HomeHeader = ({searchQuery, setSearchQuery}: HomeHeaderProps) => {
+export const HomeHeader = ({ searchQuery, setSearchQuery }: HomeHeaderProps) => {
     return (
         <View style={tw`my-4 flex-row gap-x-2 items-center justify-between`}>
             <View style={tw`p-2 w-70 flex-row border-[#AACCFF] border rounded-md`}>
@@ -24,9 +29,48 @@ export const HomeHeader = ({searchQuery, setSearchQuery}: HomeHeaderProps) => {
             </View>
             <Feather name="settings" size={24} color="#0066FF" />
 
-            <View style={tw`bg-[#CCE0FF] rounded-full w-8 h-8 p-1 items-center justify-center`}>
+            <TouchableOpacity
+                style={tw`bg-[#CCE0FF] rounded-full w-8 h-8 p-1 items-center justify-center`}>
                 <Feather name="user" size={20} color="#0066FF" />
+            </TouchableOpacity>
+
+        </View>
+    );
+}
+
+interface EditorHeaderProps {
+    isDrawerOpen: boolean;
+    setIsDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    goBack: () => void;
+}
+
+
+export const EditorHeader = ({
+    isDrawerOpen,
+    setIsDrawerOpen,
+    goBack
+} : EditorHeaderProps) => {
+
+    return (
+        <View style={tw`mt-2`}>
+            <View style={tw`mb-1 px-4 flex-row gap-x-2 items-center justify-between`}>
+                <View style={tw`flex-row gap-x-4 items-center`}>
+                    <Pressable
+                        onPress={goBack}
+                    >
+                        <Ionicons name="arrow-back-outline" size={28} color="#0066FF" />
+                    </Pressable>
+                    <BodyText size='3xl' style={tw`font-bold`}>File Name</BodyText>
+                </View>
+
+                <Pressable
+                    onPress={() => setIsDrawerOpen(!isDrawerOpen)}
+                    style={tw`bg-[#CCE0FF] rounded-full w-12 h-12 p-2 items-center justify-center`}>
+                    <Ionicons name="folder-open-outline" size={24} color="#0066FF" />
+                </Pressable>
             </View>
+
+            <View style={tw`my-1 border w-full border-[#CCE0FF]`} />
         </View>
     );
 }

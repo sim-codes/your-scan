@@ -1,15 +1,16 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { HomeScreen } from '@/screens/main/home';
-import { EditorScreen } from '@/screens/main/file';
 import { TabBarIcon } from '@/components/TabBarIcon';
 import { ProfileScreen } from './main/profile';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList } from '@/types/navigation';
 import { UploadScreen } from './main/upload';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { TextEditorScreen } from './main/editor';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createBottomTabNavigator();
 
 const FileNavigation = () => {
     return (
@@ -17,7 +18,7 @@ const FileNavigation = () => {
             <Stack.Screen name="Main" component={HomeScreen} options={{
                 headerShown: false
             }} />
-            <Stack.Screen name="File" component={EditorScreen}
+            <Stack.Screen name="Editor" component={TextEditorScreen}
                 options={{
                     title: "My Files"
                 }}
@@ -30,21 +31,18 @@ export default function MyTabs() {
     return (
         <Tab.Navigator
             initialRouteName='Home'
-            tabBarPosition='bottom'
-            keyboardDismissMode='on-drag'
         >
-            <Tab.Screen name="Home" component={FileNavigation}
+            <Tab.Screen name="Home" component={HomeScreen}
                 options={{
-                    tabBarIndicator: () => null,
                     title: 'Home',
                     tabBarIcon: ({ color, focused }) => (
                         <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
                     ),
+                    headerShown: false
                 }}
             />
             <Tab.Screen name="Upload" component={UploadScreen}
                 options={{
-                    tabBarIndicator: () => null,
                     title: 'Upload',
                     tabBarIcon: ({ color, focused }) => (
                         <TabBarIcon name={focused ? 'cloud-upload' : 'cloud-upload-outline'} color={color} />
@@ -53,7 +51,6 @@ export default function MyTabs() {
             />
             <Tab.Screen name="Profile" component={ProfileScreen}
                 options={{
-                    tabBarIndicator: () => null,
                     title: 'Profile',
                     tabBarIcon: ({ color, focused }) => (
                         <TabBarIcon name={focused ? 'person' : 'person-outline'} color={color} />

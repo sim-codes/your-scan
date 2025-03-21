@@ -8,6 +8,7 @@ import { RootStackParamList } from '@/types/navigation';
 import LoginScreen from './screens/auth/login';
 import RegisterScreen from './screens/auth/register';
 import { CameraScreen } from './screens/main/camera';
+import { TextEditorScreen } from './screens/main/editor';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -19,6 +20,9 @@ export default function App() {
             <NavigationContainer>
                 <Stack.Navigator>
                     <Stack.Screen name='Tabs' component={MyTabs} options={{
+                        headerShown: false
+                    }} />
+                    <Stack.Screen name='Editor' component={TextEditorScreen} options={{
                         headerShown: false
                     }} />
                     <Stack.Screen name='Camera' component={CameraScreen} options={{

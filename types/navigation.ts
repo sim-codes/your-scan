@@ -10,7 +10,8 @@ export type RootStackParamList = {
     Camera?: undefined;
     UploadStart?: undefined;
     Tabs: undefined;
-    Home: { screen: string, params: Params};
+    Home: { screen: string, params: Params };
+    Editor: Params;
 };
 
 export type Props = StackScreenProps<RootStackParamList, 'File'>;
