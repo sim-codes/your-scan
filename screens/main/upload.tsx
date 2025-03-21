@@ -13,6 +13,7 @@ import { RootStackParamList } from "@/types/navigation";
 import { toLexicalFormat } from "@/lexical-format";
 import { API_KEY } from "@/constants";
 import { ImageDetailsType, ImageToTextResponse } from "@/types/image";
+import { getTextFromImage } from "@/lib/imageToText";
 
 export type Props = StackScreenProps<RootStackParamList, 'File'>;
 
@@ -79,30 +80,14 @@ export const UploadScreen = () => {
 
         setIsScanning(true);
         try {
-            const imageUrl = await cloudinaryService.handleImageUpload(image);
-            console.log("Image URL:", imageUrl);
-
-            if (!imageUrl) {
-                Alert.alert("Error", "Failed to upload image. Please try again.");
-                return;
-            }
-            const response = await fetch(`https://api.apilayer.com/image_to_text/url?url=${imageUrl}`, {
-                method: 'GET',
-                headers: {
-                    'apikey': API_KEY,
-                }
-            });
-            const data = await response.json() as ImageToTextResponse;
+            const data = await getTextFromImage(image);
 
             if (data?.all_text) {
-                navigation.navigate('Home', {
-                    screen: 'File',
-                    params: {
-                        fileId: Date.now().toString(),
+                navigation.navigate('Editor', {
+                        fileId: "scan-" + Date.now().toString(),
                         fileName: "Scan Result",
-                        content: toLexicalFormat(data.all_text),
-                    }
-                });
+                        content: `<p>${data?.all_text}</p>`,
+                    });
 
                 setImage(null);
             }

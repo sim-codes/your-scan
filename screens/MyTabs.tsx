@@ -4,6 +4,7 @@ import { TabBarIcon } from '@/components/TabBarIcon';
 import { ProfileScreen } from './main/profile';
 import { UploadScreen } from './main/upload';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { COLORS } from '@/components/common/button';
 
 const Tab = createBottomTabNavigator();
 
@@ -11,6 +12,15 @@ export default function MyTabs() {
     return (
         <Tab.Navigator
             initialRouteName='Home'
+            screenOptions={{
+                tabBarActiveTintColor: '#2f95dc',
+                tabBarInactiveTintColor: '#666',
+                tabBarStyle: {
+                    backgroundColor: '#fff',
+                    borderTopWidth: 0,
+                    height: 60,
+                }
+            }}
         >
             <Tab.Screen name="Home" component={HomeScreen}
                 options={{

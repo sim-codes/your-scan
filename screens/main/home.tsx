@@ -69,20 +69,12 @@ export const HomeScreen = () => {
     // Delete file
     const deleteFile = async (fileId: string) => {
         try {
-            await AsyncStorage.removeItem(STORAGE_KEY_PREFIX + fileId);
-            setSavedFiles(prev => {
-                const updated = prev.filter(file => file.id !== fileId);
-                AsyncStorage.setItem(FILES_INDEX_KEY, JSON.stringify(updated));
-                return updated;
-            });
+            await FileStorage.deleteFile(fileId);
+            loadSavedFiles();
         } catch (error) {
             console.error('Error deleting file:', error);
         }
     };
-
-    const renameFile = async (fileId: string, newName: string) => {
-        
-    }
 
     // Rename file
     const startRenaming = (file: FileTypes) => {
