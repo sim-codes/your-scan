@@ -39,6 +39,7 @@ export const HomeHeader = ({ searchQuery, setSearchQuery }: HomeHeaderProps) => 
 }
 
 interface EditorHeaderProps {
+    filename?: string;
     isDrawerOpen: boolean;
     setIsDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
     goBack: () => void;
@@ -48,7 +49,8 @@ interface EditorHeaderProps {
 export const EditorHeader = ({
     isDrawerOpen,
     setIsDrawerOpen,
-    goBack
+    goBack,
+    filename
 } : EditorHeaderProps) => {
 
     return (
@@ -60,7 +62,7 @@ export const EditorHeader = ({
                     >
                         <Ionicons name="arrow-back-outline" size={28} color="#0066FF" />
                     </Pressable>
-                    <BodyText size='3xl' style={tw`font-bold`}>File Name</BodyText>
+                    <BodyText size='3xl' style={tw`font-bold`}>{ filename ?? 'File Name'}</BodyText>
                 </View>
 
                 <Pressable

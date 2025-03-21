@@ -12,28 +12,20 @@ import { Props } from '@/types/navigation';
 import { LinearGradient } from 'expo-linear-gradient';
 import { STORAGE_KEY_PREFIX, FILES_INDEX_KEY } from '@/constants';
 import { FileStorage } from '@/lib/storage';
-
-
-interface SavedFile {
-    id: string;
-    name: string;
-    date: string;
-    content: string;
-    lastModified: string;
-}
+import { FileTypes } from '@/types/file';
 
 type SortOrder = 'name' | 'date' | 'most-recent';
 
 export const HomeScreen = () => {
     const [displayType, setDisplayType] = useState<Display>("grid");
     const navigation = useNavigation<Props['navigation']>();
-    const [savedFiles, setSavedFiles] = useState<SavedFile[]>([]);
+    const [savedFiles, setSavedFiles] = useState<FileTypes[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [sortOrder, setSortOrder] = useState<SortOrder>('most-recent');
     const [isRenaming, setIsRenaming] = useState(false);
     const [newFileName, setNewFileName] = useState('');
-    const [fileToRename, setFileToRename] = useState<SavedFile | null>(null);
+    const [fileToRename, setFileToRename] = useState<FileTypes | null>(null);
 
     // Load saved files index
     const loadSavedFiles = async () => {
@@ -58,7 +50,7 @@ export const HomeScreen = () => {
     }, [navigation]);
 
     // Open selected file
-    const openFile = async (file: SavedFile) => {
+    const openFile = async (file: FileTypes) => {
         try {
             const data = await FileStorage.getFile(file.id);
             if (data) {
@@ -88,8 +80,12 @@ export const HomeScreen = () => {
         }
     };
 
+    const renameFile = async (fileId: string, newName: string) => {
+        
+    }
+
     // Rename file
-    const startRenaming = (file: SavedFile) => {
+    const startRenaming = (file: FileTypes) => {
         setFileToRename(file);
         setNewFileName(file.name);
         setIsRenaming(true);
@@ -98,16 +94,8 @@ export const HomeScreen = () => {
     const completeRenaming = async () => {
         if (!fileToRename || !newFileName.trim()) return;
 
-        setSavedFiles(prev => {
-            const updated = prev.map(file =>
-                file.id === fileToRename.id
-                    ? { ...file, name: newFileName.trim() }
-                    : file
-            );
-            AsyncStorage.setItem(FILES_INDEX_KEY, JSON.stringify(updated));
-            return updated;
-        });
-
+        await FileStorage.renameFile(fileToRename.id, newFileName.trim());
+        loadSavedFiles();
         setIsRenaming(false);
         setFileToRename(null);
         setNewFileName('');
@@ -167,7 +155,7 @@ export const HomeScreen = () => {
         });
     }, [savedFiles, searchQuery, sortOrder]);
 
-    const renderItem = ({ item }: { item: SavedFile }) => {
+    const renderItem = ({ item }: { item: FileTypes }) => {
         if (displayType === 'grid') {
             return (
                 <TouchableOpacity

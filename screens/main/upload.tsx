@@ -95,7 +95,6 @@ export const UploadScreen = () => {
             const data = await response.json() as ImageToTextResponse;
 
             if (data?.all_text) {
-                console.log("Scanned text:", data.all_text);
                 navigation.navigate('Home', {
                     screen: 'File',
                     params: {
@@ -117,8 +116,6 @@ export const UploadScreen = () => {
 
     return (
         <SafeAreaView style={tw`flex-1 items-center justify-center bg-white gap-y-4`}>
-            <Text style={tw`self-start mb-10 mt-2 font-semibold text-2xl text-[#0055D4]`}>Upload Image</Text>
-
             <View style={tw`w-full h-60 border-2 p-4 gap-2 border-dashed border-[#1849D6] rounded-xl items-center justify-center`}>
                 {!image ? (
                     <>

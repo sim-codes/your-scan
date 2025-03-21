@@ -8,7 +8,7 @@ export const FileStorage = {
   /**
    * Save or update a file
    */
-  saveFile: async (fileId: string | null, content: string, fileName?: string): Promise<FileTypes> => {
+  saveFile: async (fileId: string | undefined, content: string, fileName?: string): Promise<FileTypes> => {
     try {
       let newFileId = fileId || Date.now().toString();
       let newFileName = fileName || 'New Document';

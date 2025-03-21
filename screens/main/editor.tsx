@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   KeyboardAvoidingView,
@@ -13,29 +13,42 @@ import tw from 'twrnc';
 import { EditorHeader } from '@/components/common/header';
 import { Drawer } from 'react-native-drawer-layout';
 import { BodyText } from '@/components/common/text';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { CustomButton } from '@/components/common/button';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Feather from '@expo/vector-icons/Feather';
 import Foundation from '@expo/vector-icons/Foundation';
 import { FileStorage } from '@/lib/storage';
+import { StackScreenProps } from '@react-navigation/stack';
+import { Params, RootStackParamList } from '@/types/navigation';
+import { FileTypes } from '@/types/file';
+type Props = StackScreenProps<RootStackParamList, 'Editor'>;
 
 export const TextEditorScreen = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const navigation = useNavigation();
+  const navigation = useNavigation<Props['navigation']>();
+  const route = useRoute<Props['route']>();
+
+  const [currentFile, setCurrentFile] = useState<Params | null>(null);
+
+  useEffect(() => {
+    if (route.params?.fileId && route.params?.content) {
+      setCurrentFile(route.params);
+      }
+  }, [route.params]);
 
   const editor = useEditorBridge({
     autofocus: true,
     avoidIosKeyboard: true,
-    initialContent,
+    initialContent: currentFile?.content || initialContent,
   });
 
   const content = useEditorContent(editor, {type: 'html'});
 
-  const saveFile = async () => {
+  const saveFile = async (fileId: string | undefined) => {
     if (!content) return;
-    await FileStorage.saveFile(null, content);
+    await FileStorage.saveFile(fileId, content);
   }
 
   const DrawerContent = () => {
@@ -47,7 +60,7 @@ export const TextEditorScreen = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPressIn={saveFile}
+          onPressIn={() => saveFile(currentFile?.fileId)}
           style={tw`flex-row gap-x-2 items-center border-b border-[#CCE0FF] pb-2 mt-2`} onPress={() => setIsDrawerOpen(false)}>
           <Ionicons name="save-outline" size={24} color="#0066FF" />
           <BodyText style={tw`text-lg`}>Save</BodyText>
@@ -90,7 +103,7 @@ export const TextEditorScreen = () => {
             return <DrawerContent />;
         }}
       >
-        <EditorHeader isDrawerOpen={isDrawerOpen} goBack={() => navigation.goBack()} setIsDrawerOpen={setIsDrawerOpen} />
+        <EditorHeader filename={currentFile?.fileName} isDrawerOpen={isDrawerOpen} goBack={() => navigation.goBack()} setIsDrawerOpen={setIsDrawerOpen} />
         <RichText editor={editor} style={tw`bg-transparent px-2 mx-3`} />
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
