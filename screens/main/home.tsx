@@ -11,6 +11,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { Props } from '@/types/navigation';
 import { LinearGradient } from 'expo-linear-gradient';
 import { STORAGE_KEY_PREFIX, FILES_INDEX_KEY } from '@/constants';
+import { FileStorage } from '@/lib/storage';
 
 
 interface SavedFile {
@@ -33,14 +34,13 @@ export const HomeScreen = () => {
     const [isRenaming, setIsRenaming] = useState(false);
     const [newFileName, setNewFileName] = useState('');
     const [fileToRename, setFileToRename] = useState<SavedFile | null>(null);
-    const [dropdownVisible, setDropdownVisible] = useState(false);
 
     // Load saved files index
     const loadSavedFiles = async () => {
         try {
-            const filesIndex = await AsyncStorage.getItem(FILES_INDEX_KEY);
-            if (filesIndex) {
-                setSavedFiles(JSON.parse(filesIndex));
+            const data = await FileStorage.getAllFiles();
+            if (data) {
+                setSavedFiles(data);
             }
             setIsLoading(false);
         } catch (error) {
@@ -60,13 +60,13 @@ export const HomeScreen = () => {
     // Open selected file
     const openFile = async (file: SavedFile) => {
         try {
-            const content = await AsyncStorage.getItem(STORAGE_KEY_PREFIX + file.id);
-            if (content) {
+            const data = await FileStorage.getFile(file.id);
+            if (data) {
                 // Navigate back to editor with file data
-                navigation.navigate('File', {
+                navigation.navigate('Editor', {
                     fileId: file.id,
                     fileName: file.name,
-                    content: content
+                    content: data.content
                 });
             }
         } catch (error) {

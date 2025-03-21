@@ -19,6 +19,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Feather from '@expo/vector-icons/Feather';
 import Foundation from '@expo/vector-icons/Foundation';
+import { FileStorage } from '@/lib/storage';
 
 export const TextEditorScreen = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -30,7 +31,12 @@ export const TextEditorScreen = () => {
     initialContent,
   });
 
-  const content = useEditorContent(editor);
+  const content = useEditorContent(editor, {type: 'html'});
+
+  const saveFile = async () => {
+    if (!content) return;
+    await FileStorage.saveFile(null, content);
+  }
 
   const DrawerContent = () => {
     return (
@@ -40,7 +46,9 @@ export const TextEditorScreen = () => {
           <BodyText style={tw`text-lg`}>Rename</BodyText>
         </TouchableOpacity>
 
-        <TouchableOpacity style={tw`flex-row gap-x-2 items-center border-b border-[#CCE0FF] pb-2 mt-2`} onPress={() => setIsDrawerOpen(false)}>
+        <TouchableOpacity
+          onPressIn={saveFile}
+          style={tw`flex-row gap-x-2 items-center border-b border-[#CCE0FF] pb-2 mt-2`} onPress={() => setIsDrawerOpen(false)}>
           <Ionicons name="save-outline" size={24} color="#0066FF" />
           <BodyText style={tw`text-lg`}>Save</BodyText>
         </TouchableOpacity>
