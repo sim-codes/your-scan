@@ -1,11 +1,8 @@
 import tw from 'twrnc';
-import { View, Text, TextInput, Pressable, TouchableOpacity } from "react-native";
+import { View, TextInput, Pressable, TouchableOpacity } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { BodyText } from './text';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useState } from 'react';
-import { Drawer } from 'react-native-drawer-layout';
-import { CustomButton } from './button';
 
 type HomeHeaderProps = {
     searchQuery: string;
@@ -62,7 +59,7 @@ export const EditorHeader = ({
                     >
                         <Ionicons name="arrow-back-outline" size={28} color="#0066FF" />
                     </Pressable>
-                    <BodyText size='3xl' style={tw`font-bold`}>{ filename ?? 'File Name'}</BodyText>
+                    <BodyText size='3xl' style={tw`font-bold`}>{ filename ?? 'New Document'}</BodyText>
                 </View>
 
                 <Pressable

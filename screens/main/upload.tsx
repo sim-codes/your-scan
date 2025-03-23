@@ -7,11 +7,8 @@ import { ImagePickerButton } from "@/components/image-picker";
 import { useNavigation } from '@react-navigation/native';
 import { BodyText } from "@/components/common/text";
 import { LinearGradient } from "expo-linear-gradient";
-import cloudinaryService from "@/lib/cloudinary";
 import type { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from "@/types/navigation";
-import { toLexicalFormat } from "@/lexical-format";
-import { API_KEY } from "@/constants";
 import { ImageDetailsType, ImageToTextResponse } from "@/types/image";
 import { getTextFromImage } from "@/lib/imageToText";
 
@@ -84,8 +81,8 @@ export const UploadScreen = () => {
 
             if (data?.all_text) {
                 navigation.navigate('Editor', {
-                        fileId: "scan-" + Date.now().toString(),
-                        fileName: "Scan Result",
+                        fileId: "",
+                        fileName: "",
                         content: `<p>${data?.all_text}</p>`,
                     });
 

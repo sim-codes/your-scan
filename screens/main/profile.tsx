@@ -1,8 +1,10 @@
-import { View, Text, TouchableOpacity, FlatList, TextInput, Modal } from 'react-native';
+import { BodyText } from '@/components/common/text';
+import { SafeAreaView } from '@/components/common/view';
+import tw from 'twrnc';
 export const ProfileScreen = () => {
     return (
-        <View>
-            <Text>Welcome to profile</Text>
-        </View>
+        <SafeAreaView variant='screen' style={tw`items-center justify-center`}>
+            <BodyText>Welcome your profile</BodyText>
+        </SafeAreaView>
     );
 }

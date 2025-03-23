@@ -3,7 +3,6 @@ import {
   View,
   KeyboardAvoidingView,
   Platform,
-  StyleSheet,
   TouchableOpacity,
   Text,
 } from 'react-native';
@@ -14,7 +13,6 @@ import { EditorHeader } from '@/components/common/header';
 import { Drawer } from 'react-native-drawer-layout';
 import { BodyText } from '@/components/common/text';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { CustomButton } from '@/components/common/button';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Feather from '@expo/vector-icons/Feather';
@@ -22,7 +20,6 @@ import Foundation from '@expo/vector-icons/Foundation';
 import { FileStorage } from '@/lib/storage';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Params, RootStackParamList } from '@/types/navigation';
-import { FileTypes } from '@/types/file';
 type Props = StackScreenProps<RootStackParamList, 'Editor'>;
 
 export const TextEditorScreen = () => {
@@ -35,7 +32,9 @@ export const TextEditorScreen = () => {
   useEffect(() => {
     if (route.params?.fileId && route.params?.content) {
       setCurrentFile(route.params);
-      }
+    } else if (route.params?.content) {
+      setCurrentFile(route.params)
+    }
   }, [route.params]);
 
   const editor = useEditorBridge({
@@ -48,17 +47,18 @@ export const TextEditorScreen = () => {
 
   const saveFile = async (fileId: string | undefined) => {
     if (!content) return;
-    await FileStorage.saveFile(fileId, content);
+    const file = await FileStorage.saveFile(fileId, content);
+    setCurrentFile({
+      fileId: file?.id,
+      fileName: file?.name,
+      content: file.content
+    })
+    return;
   }
 
   const DrawerContent = () => {
     return (
       <View style={tw`flex-1 p-5`}>
-        <TouchableOpacity style={tw`flex-row gap-x-2 items-center border-b border-[#CCE0FF] pb-2 mt-2`} onPress={() => setIsDrawerOpen(false)}>
-          <Feather name="edit" size={24} color="#0066FF" />
-          <BodyText style={tw`text-lg`}>Rename</BodyText>
-        </TouchableOpacity>
-
         <TouchableOpacity
           onPressIn={() => saveFile(currentFile?.fileId)}
           style={tw`flex-row gap-x-2 items-center border-b border-[#CCE0FF] pb-2 mt-2`} onPress={() => setIsDrawerOpen(false)}>

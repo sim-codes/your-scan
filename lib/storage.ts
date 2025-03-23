@@ -12,8 +12,7 @@ export const FileStorage = {
     try {
       let newFileId = fileId || Date.now().toString();
       let newFileName = fileName || 'New Document';
-      
-      // Retrieve existing files index
+
       const filesIndexStr = await storage.getStringAsync(FILES_INDEX_KEY);
       let files: FileTypes[] = filesIndexStr ? JSON.parse(filesIndexStr) : [];
 

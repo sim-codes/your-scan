@@ -1,17 +1,11 @@
 import { View, Dimensions, TouchableOpacity, Button, Image, Alert, ActivityIndicator } from "react-native";
-import { BodyText } from "@/components/common/text";
 import tw from "twrnc";
 import { useRef, useState } from "react";
 import { Pressable, Text } from "react-native";
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { CameraView, useCameraPermissions, CameraPictureOptions, CameraType } from "expo-camera";
-import { SafeAreaView } from "@/components/common/view";
 import { useNavigation } from "@react-navigation/native";
-import cloudinaryService from "@/lib/cloudinary";
-import { API_KEY } from "@/constants";
-import { ImageToTextResponse } from "@/types/image";
-import { toLexicalFormat } from "@/lexical-format";
 import type { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from "@/types/navigation";
 import { getTextFromImage } from "@/lib/imageToText";
@@ -57,8 +51,8 @@ export const CameraScreen = () => {
 
             if (data?.all_text) {
                 navigation.navigate('Editor', {
-                        fileId: Date.now().toString(),
-                        fileName: "Scan Result",
+                        fileId: "",
+                        fileName: "",
                         content: `<p>${data?.all_text}</p>`,
                     });
 

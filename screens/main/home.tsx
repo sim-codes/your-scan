@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, TouchableOpacity, FlatList, TextInput, Modal, Pressable } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'twrnc';
 import { HomeHeader } from '@/components/common/header';
@@ -10,7 +9,6 @@ import { Display, SortOption } from '@/types/home';
 import Feather from '@expo/vector-icons/Feather';
 import { Props } from '@/types/navigation';
 import { LinearGradient } from 'expo-linear-gradient';
-import { STORAGE_KEY_PREFIX, FILES_INDEX_KEY } from '@/constants';
 import { FileStorage } from '@/lib/storage';
 import { FileTypes } from '@/types/file';
 

@@ -1,5 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
-
 type Routes = {
     routeNames: never[];
 };
