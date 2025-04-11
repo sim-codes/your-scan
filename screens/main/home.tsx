@@ -39,6 +39,10 @@ export const HomeScreen = () => {
         }
     };
 
+    const goToLogin = () => {
+        navigation.navigate('Login');
+    }
+
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             loadSavedFiles();
@@ -223,7 +227,7 @@ export const HomeScreen = () => {
 
     return (
         <SafeAreaView style={tw`flex-1 bg-white gap-y-4`}>
-            <HomeHeader searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+            <HomeHeader searchQuery={searchQuery} setSearchQuery={setSearchQuery} goToLogin={goToLogin} />
             <FilterSortView
                 initialDisplay={displayType}
                 initialSortOption={mapSortOrderToSortOption(sortOrder)}

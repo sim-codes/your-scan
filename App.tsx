@@ -10,15 +10,23 @@ import RegisterScreen from './screens/auth/register';
 import { CameraScreen } from './screens/main/camera';
 import { TextEditorScreen } from './screens/main/editor';
 import Toast from 'react-native-toast-message';
-import { UserProvider } from '@/lib/context';
+import { useEffect } from 'react';
+import { initializeAuth, useUserStore } from '@/lib/context';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 
 export default function App() {
+    useEffect(() => {
+        initializeAuth();
+    }, []);
+
+    const { user } = useUserStore();
+    console.log('user data', user)
+
     const isAuthenticated = true;
+
     return (
-        <UserProvider>
             <SafeAreaProvider>
                 <NavigationContainer>
                     <Stack.Navigator>
@@ -42,6 +50,5 @@ export default function App() {
                 </NavigationContainer >
                 <Toast />
             </SafeAreaProvider>
-        </UserProvider>
     );
 }
