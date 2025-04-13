@@ -22,7 +22,6 @@ export default function App() {
     }, []);
 
     const { user } = useUserStore();
-    console.log('user data', user)
 
     const isAuthenticated = true;
 
