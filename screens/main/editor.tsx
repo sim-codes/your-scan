@@ -5,6 +5,7 @@ import {
   Platform,
   TouchableOpacity,
   Text,
+  ActivityIndicator,
 } from 'react-native';
 import { RichText, Toolbar, useEditorBridge, useEditorContent } from '@10play/tentap-editor';
 import { SafeAreaView } from '@/components/common/view';
@@ -20,10 +21,17 @@ import Foundation from '@expo/vector-icons/Foundation';
 import { FileStorage } from '@/lib/storage';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Params, RootStackParamList } from '@/types/navigation';
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+import Toast from "react-native-toast-message";
+import { htmlToPdf } from '@/lib/htmlToPdf';
+import { htmlToDocx } from '@/lib/htmlToDocx';
+
 type Props = StackScreenProps<RootStackParamList, 'Editor'>;
 
 export const TextEditorScreen = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const navigation = useNavigation<Props['navigation']>();
   const route = useRoute<Props['route']>();
 
@@ -43,49 +51,210 @@ export const TextEditorScreen = () => {
     initialContent: currentFile?.content || initialContent,
   });
 
-  const content = useEditorContent(editor, {type: 'html'});
+  const content = useEditorContent(editor, { type: 'html' });
+  // Get plain text content when needed
+  const plainTextContent = useEditorContent(editor, { type: 'text' });
 
   const saveFile = async (fileId: string | undefined) => {
     if (!content) return;
-    const file = await FileStorage.saveFile(fileId, content);
-    setCurrentFile({
-      fileId: file?.id,
-      fileName: file?.name,
-      content: file.content
-    })
+    try {
+      const file = await FileStorage.saveFile(fileId, content);
+      setCurrentFile({
+        fileId: file?.id,
+        fileName: file?.name,
+        content: file.content
+      });
+      Toast.show({
+        type: 'success',
+        text1: 'File Saved',
+        text2: 'Document saved successfully',
+      });
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Save Failed',
+        text2: 'Could not save the document',
+      });
+    }
     return;
-  }
+  };
+
+  // Helper function to generate a filename
+  const generateFileName = (extension: string) => {
+    const fileName = currentFile?.fileName || 'document';
+    // Remove any existing extension and add the new one
+    const baseFileName = fileName.replace(/\.\w+$/, '');
+    return `${baseFileName}.${extension}`;
+  };
+
+  // Export to text file
+  const exportToText = async () => {
+    try {
+      setIsExporting(true);
+      if (!plainTextContent) {
+        Toast.show({
+          type: 'error',
+          text1: 'Export Failed',
+          text2: 'No content to export',
+        });
+        return;
+      }
+
+      const fileName = generateFileName('txt');
+      const fileUri = `${FileSystem.documentDirectory}${fileName}`;
+
+      await FileSystem.writeAsStringAsync(fileUri, plainTextContent);
+
+      await Sharing.shareAsync(fileUri);
+
+      Toast.show({
+        type: 'success',
+        text1: 'Export Successful',
+        text2: 'Text file exported',
+      });
+    } catch (error) {
+      console.error("Failed to export text:", error);
+      Toast.show({
+        type: 'error',
+        text1: 'Export Failed',
+        text2: 'Could not export text file',
+      });
+    } finally {
+      setIsExporting(false);
+      setIsDrawerOpen(false);
+    }
+  };
+
+  // Export to PDF
+  const exportToPdf = async () => {
+    try {
+      setIsExporting(true);
+      if (!content) {
+        Toast.show({
+          type: 'error',
+          text1: 'Export Failed',
+          text2: 'No content to export',
+        });
+        return;
+      }
+
+      const fileName = generateFileName('pdf');
+      const fileUri = await htmlToPdf(content, fileName);
+
+      if (fileUri) {
+        await Sharing.shareAsync(fileUri);
+        Toast.show({
+          type: 'success',
+          text1: 'Export Successful',
+          text2: 'PDF exported',
+        });
+      } else {
+        throw new Error("PDF generation failed");
+      }
+    } catch (error) {
+      console.error("Failed to export PDF:", error);
+      Toast.show({
+        type: 'error',
+        text1: 'Export Failed',
+        text2: 'Could not create PDF file',
+      });
+    } finally {
+      setIsExporting(false);
+      setIsDrawerOpen(false);
+    }
+  };
+
+  // Export to DOCX
+  const exportToDocx = async () => {
+    try {
+      setIsExporting(true);
+      if (!content) {
+        Toast.show({
+          type: 'error',
+          text1: 'Export Failed',
+          text2: 'No content to export',
+        });
+        return;
+      }
+
+      const fileName = generateFileName('docx');
+      const fileUri = await htmlToDocx(content, fileName);
+
+      if (fileUri) {
+        await Sharing.shareAsync(fileUri);
+        Toast.show({
+          type: 'success',
+          text1: 'Export Successful',
+          text2: 'DOCX exported',
+        });
+      } else {
+        throw new Error("DOCX generation failed");
+      }
+    } catch (error) {
+      console.error("Failed to export DOCX:", error);
+      Toast.show({
+        type: 'error',
+        text1: 'Export Failed',
+        text2: 'Could not create DOCX file',
+      });
+    } finally {
+      setIsExporting(false);
+      setIsDrawerOpen(false);
+    }
+  };
 
   const DrawerContent = () => {
     return (
       <View style={tw`flex-1 p-5`}>
         <TouchableOpacity
+          disabled={isExporting}
           onPressIn={() => saveFile(currentFile?.fileId)}
-          style={tw`flex-row gap-x-2 items-center border-b border-[#CCE0FF] pb-2 mt-2`} onPress={() => setIsDrawerOpen(false)}>
+          style={tw`flex-row gap-x-2 items-center border-b border-[#CCE0FF] pb-2 mt-2`}
+          onPress={() => setIsDrawerOpen(false)}>
           <Ionicons name="save-outline" size={24} color="#0066FF" />
           <BodyText style={tw`text-lg`}>Save</BodyText>
         </TouchableOpacity>
 
         <Text style={tw`text-2xl my-2 font-semibold`}>File export options</Text>
 
-        <TouchableOpacity style={tw`flex-row gap-x-2 items-center border-b border-[#CCE0FF] pb-2 mt-2`} onPress={() => setIsDrawerOpen(false)}>
-        <Feather name="file-text" size={24} color="#0066FF" />
-          <BodyText style={tw`text-lg`}>Export to txt</BodyText>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={tw`flex-row gap-x-2 items-center border-b border-[#CCE0FF] pb-2 mt-2`} onPress={() => setIsDrawerOpen(false)}>
-        <Foundation name="page-doc" size={28} color="#0066FF" />
-          <BodyText style={tw`text-lg`}>Export to docx</BodyText>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={tw`flex-row gap-x-2 items-center border-b border-[#CCE0FF] pb-2 mt-2`} onPress={() => setIsDrawerOpen(false)}>
-          <FontAwesome name="file-pdf-o" size={24} color="#0066FF" />
-          <BodyText style={tw`text-lg`}>Export to pdf</BodyText>
+        <TouchableOpacity
+          disabled={isExporting}
+          style={tw`flex-row gap-x-2 items-center border-b border-[#CCE0FF] pb-2 mt-2`}
+          onPress={exportToText}>
+          <Feather name="file-text" size={24} color="#0066FF" />
+          <View style={tw`flex-row items-center`}>
+            <BodyText style={tw`text-lg mr-2`}>Export to txt</BodyText>
+            {isExporting && <ActivityIndicator size="small" color="#0066FF" />}
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity
+          disabled={isExporting}
+          style={tw`flex-row gap-x-2 items-center border-b border-[#CCE0FF] pb-2 mt-2`}
+          onPress={exportToDocx}>
+          <Foundation name="page-doc" size={28} color="#0066FF" />
+          <View style={tw`flex-row items-center`}>
+            <BodyText style={tw`text-lg mr-2`}>Export to docx</BodyText>
+            {isExporting && <ActivityIndicator size="small" color="#0066FF" />}
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          disabled={isExporting}
+          style={tw`flex-row gap-x-2 items-center border-b border-[#CCE0FF] pb-2 mt-2`}
+          onPress={exportToPdf}>
+          <FontAwesome name="file-pdf-o" size={24} color="#0066FF" />
+          <View style={tw`flex-row items-center`}>
+            <BodyText style={tw`text-lg mr-2`}>Export to pdf</BodyText>
+            {isExporting && <ActivityIndicator size="small" color="#0066FF" />}
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          disabled={isExporting}
           onPressIn={() => navigation.goBack()}
-          style={tw`flex-row gap-x-2 items-center border-b border-[#CCE0FF] pb-2 mt-2`} onPress={() => setIsDrawerOpen(false)}>
+          style={tw`flex-row gap-x-2 items-center border-b border-[#CCE0FF] pb-2 mt-2`}
+          onPress={() => setIsDrawerOpen(false)}>
           <Ionicons name="exit-outline" size={24} color="black" />
           <BodyText style={tw`text-lg text-black`}>Close File</BodyText>
         </TouchableOpacity>
@@ -100,7 +269,7 @@ export const TextEditorScreen = () => {
         onOpen={() => setIsDrawerOpen(true)}
         onClose={() => setIsDrawerOpen(false)}
         renderDrawerContent={() => {
-            return <DrawerContent />;
+          return <DrawerContent />;
         }}
       >
         <EditorHeader filename={currentFile?.fileName} isDrawerOpen={isDrawerOpen} goBack={() => navigation.goBack()} setIsDrawerOpen={setIsDrawerOpen} />
@@ -110,8 +279,9 @@ export const TextEditorScreen = () => {
           style={tw`absolute bottom-0 w-full`}
         >
           <Toolbar editor={editor} />
-          </KeyboardAvoidingView>
-        </Drawer>
+        </KeyboardAvoidingView>
+        <Toast />
+      </Drawer>
     </SafeAreaView>
   );
 };
