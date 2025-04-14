@@ -9,9 +9,10 @@ import { useUserStore } from '@/lib/authContext';
 import { Props } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
+import { CustomButton } from '@/components/common/button';
 
 export const ProfileScreen = () => {
-    const { user } = useUserStore();
+    const { user, logout } = useUserStore();
     const [isSyncing, setIsSyncing] = useState(false);
     const navigation = useNavigation<Props['navigation']>();
 
@@ -47,7 +48,7 @@ export const ProfileScreen = () => {
 
     return (
         <SafeAreaView style={tw`flex-1 bg-white items-center justify-start p-4`}>
-            <View style={tw`w-full max-w-md`}>
+            <View style={tw`w-full max-w-md gap-y-3`}>
                 {user ? (
                     <>
                         {/* User Info */}
@@ -84,20 +85,28 @@ export const ProfileScreen = () => {
                                 )}
                             </LinearGradient>
                         </Pressable>
+
+                        <CustomButton
+                            onPress={() => {
+                                logout()
+                            }}
+                        >
+                            Logout
+                        </CustomButton>
                     </>
                 ) : (
                     <>
                         <Text style={tw`text-lg text-gray-500 text-center mb-4`}>
                             You are not logged in. Please log in to sync your files with the cloud.
                         </Text>
-                        <Pressable
+                        <CustomButton
                             style={tw`px-4 py-3 bg-blue-600 rounded-md items-center justify-center h-14`}
                             onPress={() => {
                                 navigation.navigate('Login');
                             }}
                         >
                             <Text style={tw`text-white text-lg font-bold`}>Login</Text>
-                        </Pressable>
+                        </CustomButton>
                     </>
                 )}
             </View>
