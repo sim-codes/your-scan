@@ -10,7 +10,7 @@ export type RootStackParamList = {
     Camera?: undefined;
     UploadStart?: undefined;
     Tabs: undefined;
-    Home: { screen: string, params: Params };
+    Home?: undefined;
     Editor: Params;
 };
 

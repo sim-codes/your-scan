@@ -8,7 +8,7 @@ import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Props } from "@/types/navigation";
 import Toast from "react-native-toast-message";
-import { useUserStore } from "@/lib/context";
+import { useUserStore } from "@/lib/authContext";
 import { useState } from "react";
 
 // Define the form data type

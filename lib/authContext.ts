@@ -1,9 +1,15 @@
-import { ID, Models } from "react-native-appwrite";
 import { create } from "zustand";
-import { account } from "@/lib/appwrite";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+  onAuthStateChanged,
+  User
+} from "firebase/auth";
 import Toast from "react-native-toast-message";
-
-type User = Models.User<Models.Preferences>;
+import { auth } from "@/FirebaseConfig";
 
 // Define types for input parameters
 interface LoginParams {
@@ -36,14 +42,13 @@ export const useUserStore = create<UserStore>((set) => ({
   login: async ({ email, password }: LoginParams) => {
     set({ isLoading: true });
     try {
-      const session = await account.createEmailPasswordSession(email, password);
-      const loggedIn = await account.get();
-      set({ user: loggedIn, isLoading: false });
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      set({ user: userCredential.user, isLoading: false });
 
       Toast.show({
         type: 'success',
         text1: 'Login successful',
-        text2: `Welcome back, ${loggedIn.name || 'User'}!`,
+        text2: `Welcome back, ${userCredential.user.displayName || 'User'}!`,
       });
     } catch (error) {
       set({ isLoading: false });
@@ -65,7 +70,7 @@ export const useUserStore = create<UserStore>((set) => ({
   logout: async () => {
     set({ isLoading: true });
     try {
-      await account.deleteSession("current");
+      await signOut(auth);
       set({ user: null, isLoading: false });
 
       Toast.show({
@@ -93,12 +98,14 @@ export const useUserStore = create<UserStore>((set) => ({
     set({ isLoading: true });
     try {
       // Create the account
-      await account.create(ID.unique(), email, password, fullName);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-      // Auto-login after registration
-      const session = await account.createEmailPasswordSession(email, password);
-      const loggedIn = await account.get();
-      set({ user: loggedIn, isLoading: false });
+      // Update profile with the full name
+      await updateProfile(userCredential.user, {
+        displayName: fullName
+      });
+
+      set({ user: userCredential.user, isLoading: false });
 
       Toast.show({
         type: 'success',
@@ -123,32 +130,47 @@ export const useUserStore = create<UserStore>((set) => ({
 
   init: async () => {
     set({ isLoading: true });
-    try {
-      const loggedIn = await account.get();
-      set({ user: loggedIn, isLoading: false });
-      console.log('User authenticated:', loggedIn.name);
-    } catch (err) {
-      set({ user: null, isLoading: false });
-      // Silent error - user is simply not logged in
-      console.log('No active session found');
-    }
+    return new Promise<void>((resolve) => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          set({ user, isLoading: false });
+          console.log('User authenticated:', user.displayName);
+        } else {
+          set({ user: null, isLoading: false });
+          console.log('No active session found');
+        }
+        unsubscribe();
+        resolve();
+      });
+    });
   }
 }));
 
-// Helper function to extract error message from Appwrite errors
+// Helper function to extract error message from Firebase errors
 function extractErrorMessage(error: unknown): string {
   if (typeof error === 'object' && error !== null) {
-    // Handle Appwrite specific error format
-    if ('message' in error) {
-      return (error as { message: string }).message;
+    // Handle Firebase auth error format
+    if ('code' in error && 'message' in error) {
+      const errorCode = (error as { code: string }).code;
+      const errorMessage = (error as { message: string }).message;
+
+      // Map specific Firebase error codes to user-friendly messages
+      if (errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+        return 'Invalid email or password';
+      } else if (errorCode === 'auth/email-already-in-use') {
+        return 'This email is already registered';
+      } else if (errorCode === 'auth/weak-password') {
+        return 'Password is too weak';
+      } else if (errorCode === 'auth/invalid-email') {
+        return 'Invalid email address';
+      }
+
+      return errorMessage;
     }
 
-    // Handle potential response error format
-    if ('response' in error &&
-      typeof (error as any).response === 'object' &&
-      (error as any).response &&
-      'message' in (error as any).response) {
-      return (error as any).response.message;
+    // Handle general error messages
+    if ('message' in error) {
+      return (error as { message: string }).message;
     }
   }
   return 'An unexpected error occurred';

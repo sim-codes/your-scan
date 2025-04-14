@@ -6,10 +6,13 @@ import { FormField } from "@/components/form/form";
 import tw from "twrnc";
 import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Props } from "@/types/navigation";
 import Toast from "react-native-toast-message";
-import { useUserStore } from "@/lib/context";
+import { useUserStore } from "@/lib/authContext";
 import { useState } from "react";
+import { StackScreenProps } from "@react-navigation/stack";
+import { RootStackParamList } from "@/types/navigation";
+
+export type Props = StackScreenProps<RootStackParamList, 'Home'>;
 
 // Define the form data type
 type LoginFormData = {
@@ -21,6 +24,13 @@ export default function LoginScreen() {
     const navigation = useNavigation<Props["navigation"]>();
     const { login } = useUserStore();
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const { user } = useUserStore();
+
+    // Check if user is already logged in
+    if (user) {
+        navigation.navigate("Tabs");
+    }
 
     const {
         control,
@@ -52,7 +62,7 @@ export default function LoginScreen() {
             });
 
             // Navigate to home or dashboard screen
-            navigation.navigate("Main");
+            navigation.navigate("Tabs");
         } catch (error) {
             // Handle specific error types from your API
             if (typeof error === "object" && error !== null && "message" in error) {

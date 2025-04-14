@@ -11,7 +11,7 @@ import { CameraScreen } from './screens/main/camera';
 import { TextEditorScreen } from './screens/main/editor';
 import Toast from 'react-native-toast-message';
 import { useEffect } from 'react';
-import { initializeAuth, useUserStore } from '@/lib/context';
+import { initializeAuth, useUserStore } from '@/lib/authContext';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
