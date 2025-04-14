@@ -29,6 +29,11 @@ export default function LoginScreen() {
 
     // Check if user is already logged in
     if (user) {
+        Toast.show({
+            type: "info",
+            text1: "Already logged in",
+            text2: "You are already logged in. Redirecting to home.",
+        })
         navigation.navigate("Tabs");
     }
 

@@ -25,7 +25,7 @@ export const HomeHeader = ({ searchQuery, setSearchQuery, goToLogin }: HomeHeade
                 />
                 <Feather name="search" size={24} color="#0066FF" />
             </View>
-            <Feather name="settings" size={24} color="#0066FF" />
+            {/* <Feather name="settings" size={24} color="#0066FF" /> */}
 
             <TouchableOpacity
                 onPress={goToLogin}
