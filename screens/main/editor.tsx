@@ -215,7 +215,7 @@ export const TextEditorScreen = () => {
           <BodyText style={tw`text-lg`}>Save</BodyText>
         </TouchableOpacity>
 
-        <Text style={tw`text-2xl my-2 font-semibold`}>File export options</Text>
+        <Text style={tw`text-xl my-2 font-semibold`}>File export options</Text>
 
         <TouchableOpacity
           disabled={isExporting}

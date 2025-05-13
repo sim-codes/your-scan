@@ -10,11 +10,23 @@ import { Props } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { CustomButton } from '@/components/common/button';
+import { FileStorage } from '@/lib/storage';
 
 export const ProfileScreen = () => {
     const { user, logout } = useUserStore();
     const [isSyncing, setIsSyncing] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     const navigation = useNavigation<Props['navigation']>();
+
+    const deleteLocalData= async()=> {
+        setIsDeleting(true);
+        await FileStorage.clearAllFiles();
+        Toast.show({
+            type: 'info',
+            text1: "Storage File Deleted", text2: "Local Files Deleted Sucessfully"
+        })
+        setIsDeleting(false)
+    }
 
     const handleSync = async () => {
         if (!user) {
@@ -109,6 +121,15 @@ export const ProfileScreen = () => {
                         </CustomButton>
                     </>
                 )}
+
+                        <CustomButton
+                            style={tw`px-4 py-3 bg-blue-600 rounded-md items-center justify-center h-14`}
+                            onPress={() => {
+                                deleteLocalData()
+                            }}
+                        >
+                            <Text style={tw`text-white text-lg font-bold`}>Clear local</Text>
+                        </CustomButton>
             </View>
         </SafeAreaView>
     );

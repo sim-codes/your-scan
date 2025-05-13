@@ -59,8 +59,8 @@ export const UploadScreen = () => {
         const splitName = name.split('.');
         const extension = splitName.length > 1 ? splitName[splitName.length - 1] : '';
         const baseName = splitName.length > 1 ? splitName.slice(0, -1).join('.') : name;
-        const truncatedName = baseName.length > 10 ?
-            baseName.slice(0, 10) + '...' + (extension ? '.' + extension : '') :
+        const truncatedName = baseName.length > 5 ?
+            baseName.slice(0, 5) + '...' + (extension ? '.' + extension : '') :
             name;
         return truncatedName;
     }
@@ -101,15 +101,15 @@ export const UploadScreen = () => {
             <View style={tw`w-full h-60 border-2 p-4 gap-2 border-dashed border-[#1849D6] rounded-xl items-center justify-center`}>
                 {!image ? (
                     <>
-                        <View style={tw`rounded-full bg-[#1849D6] h-12 w-12 p-2 items-center justify-center`}>
-                            <Feather name="upload" size={24} color="white" />
+                        <View style={tw`rounded-full bg-[#1849D6] h-10 w-10 p-2 items-center justify-center`}>
+                            <Feather name="upload" size={20} color="white" />
                         </View>
 
                         <Text style={tw`text-center my-4`}>You can upload by importing or by scanning with your camera</Text>
                     </>
                 ) : (
                         <View style={tw`flex-row gap-x-2 items-center justify-center`}>
-                            <View style={tw`h-45 w-35 rounded-lg bg-black`}>
+                            <View style={tw`h-35 w-25 rounded-lg bg-black`}>
                                 <Image
                                     source={{ uri: image }}
                                     style={tw`h-full w-full rounded-lg`}
@@ -124,11 +124,11 @@ export const UploadScreen = () => {
                                     </Text>
                                 </View>
 
-                                <View style={tw`flex-row gap-x-2 items-center`}>
+                                <View style={tw`flex-row gap-x-1 items-center`}>
                                     <Pressable
                                         onPress={() => setImage(null)}
-                                        style={tw`rounded-full bg-[#FFD1D4] h-10 w-10 android:h-14 android:w-14 p-1 items-center justify-center`}>
-                                        <Feather name="trash-2" size={24} color="#FF3944" />
+                                        style={tw`rounded-full bg-[#FFD1D4] h-8 w-8 android:h-10 android:w-10 p-1 items-center justify-center`}>
+                                        <Feather name="trash-2" size={20} color="#FF3944" />
                                     </Pressable>
                                     <ImagePickerButton selectedImage={image} setSelectedImage={setImage} />
                                 </View>

@@ -61,7 +61,7 @@ export const EditorHeader = ({
                     >
                         <Ionicons name="arrow-back-outline" size={28} color="#0066FF" />
                     </Pressable>
-                    <BodyText size='3xl' style={tw`font-bold`}>{ filename ?? 'New Document'}</BodyText>
+                    <BodyText size='xl' style={tw`font-bold`}>{ filename ?? 'New Document'}</BodyText>
                 </View>
 
                 <Pressable
